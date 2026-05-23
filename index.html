@@ -33,7 +33,7 @@
   #gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; background: var(--charcoal); }
   .gate-card { background: transparent; border-radius: 16px; padding: 2.5rem; max-width: 380px; width: 100%; text-align: center; }
   .gate-logo { margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; }
-  .gate-card h1 { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: var(--ink); letter-spacing: -0.2px; }
+  .gate-card h1 { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: var(#fff); letter-spacing: -0.2px; }
   .gate-sub { font-size: 14px; color: var(--ink-muted); margin-bottom: 1.75rem; line-height: 1.6; }
   .gate-input { width: 100%; font-size: 15px; padding: 11px 16px; border: 1px solid var(--card-edge); border-radius: 999px; background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; text-align: center; letter-spacing: 0.05em; margin-bottom: 10px; outline: none; transition: border-color 0.15s; }
   .gate-input:focus { border-color: var(--green); }
@@ -178,7 +178,7 @@
     <input class="gate-input" type="text" id="gate-input" placeholder="Access code" autocomplete="off">
     <button class="gate-btn" onclick="checkCode()">Enter</button>
     <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
-    <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
+    <p class="gate-tagline">Powered by residents, for residents</p>
   </div>
 </div>
 
