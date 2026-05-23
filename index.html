@@ -332,10 +332,15 @@ async function vote(id) {
   btn.disabled = true;
   const item = backlog.find(i => i.ID==id);
   const delta = userVotes[id] ? -1 : 1;
-  if(userVotes[id]) { delete userVotes[id]; item.Upvotes=(Number(item.Upvotes)||0)-1; }
-  else { userVotes[id]=true; item.Upvotes=(Number(item.Upvotes)||0)+1; }
-  renderBacklog(); renderSimilarList(); updateStats();
-  try { await fetch(`${SCRIPT_URL}?action=upvote&id=${id}&delta=${delta}`, {redirect:"follow"}); } catch(e) {}
+  if(userVotes[id]) { delete userVotes[id]; }
+  else { userVotes[id] = true; }
+  item.Upvotes = Math.max(0, (Number(item.Upvotes)||0) + delta);
+  renderBacklog(); updateStats();
+  try {
+    const url = SCRIPT_URL + '?action=upvote&id=' + encodeURIComponent(id) + '&delta=' + delta;
+    await fetch(url, {redirect:'follow', mode:'no-cors'});
+  } catch(e) { console.log('Upvote error:', e); }
+  btn.disabled = false;
 }
 
 function setFilter(f,btn) {
@@ -409,7 +414,13 @@ async function refreshBacklog() {
     const bl = await fetch(SCRIPT_URL + '?action=getBacklog', {redirect:'follow'}).then(r => r.json());
     const freshItems = bl.filter(r => r.ID);
     const newItems = backlog.filter(i => i._new);
-    backlog = [...newItems, ...freshItems.filter(f => !newItems.find(n => n.ID == f.ID))];
+    const merged = [...newItems, ...freshItems.filter(f => !newItems.find(n => n.ID == f.ID))];
+    merged.forEach(item => {
+      if(userVotes[item.ID]) {
+        item.Upvotes = Math.max(Number(item.Upvotes)||0, 1);
+      }
+    });
+    backlog = merged;
     renderBacklog(); updateStats();
   } catch(e) {}
 }
