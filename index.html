@@ -58,7 +58,7 @@
   .modal-body p:last-child { margin-bottom: 0; }
   .modal-body a { color: var(--green); font-weight: 500; cursor: pointer; text-decoration: underline; }
 
-  .container { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.5rem 2rem; }
+  .container { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.5rem 6rem; }
 
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.75rem; }
   .stat { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; }
@@ -111,21 +111,15 @@
   .success-msg { font-size: 14px; color: var(--resolved-fg); margin-top: 10px; display: none; font-weight: 500; }
 
   .feedback-link { background: none; border: none; color: var(--green); font-size: 12px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; text-decoration: underline; padding: 0; }
-  .info-strip { display: flex; gap: 8px; align-items: flex-start; background: rgba(45,74,45,0.07); border: 0.5px solid rgba(45,74,45,0.15); border-radius: 8px; padding: 10px 12px; margin-bottom: 1rem; }
-  .info-strip span { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
-  .info-strip i { color: #2D4A2D; flex-shrink: 0; margin-top: 1px; font-size: 15px; }
+  .info-strip { font-size: 13px; color: var(--ink-soft); border-left: 2px solid var(--terra); padding: 3px 0 3px 10px; margin-bottom: 1rem; line-height: 1.5; font-style: italic; border-radius: 0; }
   .feedback-link:hover { opacity: 0.7; }
-  .feedback-form-inline { background: var(--card-bg); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.5rem; margin-top: 0.5rem; }
-  .feedback-textarea-inline { width: 100%; font-size: 14px; padding: 9px 12px; border: 0.5px solid var(--border-strong); border-radius: 8px; background: var(--page-bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 80px; resize: vertical; outline: none; margin-bottom: 10px; transition: border-color 0.15s; }
-  .feedback-textarea-inline:focus { border-color: var(--green); background: var(--pure-white); }
-  .feedback-submit-inline { padding: 8px 18px; background: var(--green); color: var(--pure-white); border: none; border-radius: 8px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; }
-  .feedback-submit-inline:hover { background: var(--green-light); }
   .feedback-cancel { background: none; border: none; font-size: 13px; color: var(--ink-faint); font-family: 'DM Sans', sans-serif; cursor: pointer; }
   .feedback-cancel:hover { color: var(--ink-soft); }
   .feedback-success { font-size: 13px; color: var(--resolved-fg); margin-top: 8px; display: none; font-weight: 500; }
 
-  .fab { display: block; width: 100%; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 16px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.3), 0 2px 8px rgba(45,74,45,0.25); margin-top: 1rem; transition: all 0.15s; text-align: center; }
-  .fab:hover { background: var(--green-light); transform: translateY(-1px); }
+  .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: #E8E0D4; padding: 12px 1.5rem 16px; border-top: 0.5px solid rgba(26,24,20,0.1); z-index: 50; }
+  .fab { display: block; width: 100%; max-width: 720px; margin: 0 auto; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 16px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.35), 0 2px 8px rgba(45,74,45,0.25); transition: all 0.15s; text-align: center; }
+  .fab:hover { background: var(--green-light); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(180,220,80,0.45), 0 2px 10px rgba(45,74,45,0.3); }
 
   .tagline { text-align: center; font-size: 12px; color: rgba(45,74,45,0.45); padding: 1.5rem 0 0.5rem; letter-spacing: 0.03em; }
   .loading, .empty { text-align: center; padding: 3rem 0; font-size: 15px; color: var(--ink-soft); }
@@ -136,7 +130,7 @@
     .stats { gap: 8px; }
     .stat { padding: 0.9rem 1rem; }
     .stat-val { font-size: 24px; }
-    .container { padding: 1.25rem 1rem 2rem; }
+    .container { padding: 1.25rem 1rem 6rem; }
     .modal-overlay { padding: 1rem; }
     .modal { padding: 1.5rem; }
   }
@@ -172,7 +166,7 @@
         <p>This is a resident-maintained issue register for Wicks Place. One central place where owners and residents can log issues, see what others have raised, and understand how widely a problem is felt.</p>
         <p>It exists because building management works better with clear, direct feedback from the people who live here. This backlog gives our building manager and strata committee a prioritised, living list of what matters to residents, and it's updated in real time.</p>
         <p>When you upvote an issue, you're adding weight to it. The more upvotes an issue has, the easier it is to see its level of importance, and have action prioritised for it accordingly.</p>
-        <p>If you have any thoughts or suggestions about the backlog, please <a onclick="closeModal();showBacklog();setTimeout(toggleFeedback,50)">share your feedback</a>.</p>
+        <p>If you have any thoughts or suggestions about the backlog, please <a onclick="closeModal();showSection('feedback',null);setTimeout(()=>document.getElementById('feedback-text').focus(),50)">share your feedback</a>.</p>
       </div>
     </div>
   </div>
@@ -205,20 +199,29 @@
           <div class="feedback-success" id="feedback-success">✓ Thanks — we'll take a look.</div>
         </div>
       </div>
-      <button class="fab" onclick="showSection('submit',null)">Submit issue</button>
+
       <p class="tagline">Powered by residents · <button class="feedback-link" onclick="toggleFeedback()">Give feedback</button></p>
+    </div>
+
+    <div id="section-feedback" class="section">
+      <div class="form-card">
+        <h2>Give feedback</h2>
+        <p>Something missing from the backlog? Wrong priority? Let us know — your feedback helps keep this accurate.</p>
+        <label class="form-label">Your feedback *</label>
+        <textarea class="form-textarea" id="feedback-text" placeholder="Tell us what's missing, wrong, or could be better…"></textarea>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="form-submit" id="feedback-btn" onclick="submitFeedback()">Send feedback</button>
+          <button class="feedback-cancel" onclick="showBacklog()">Cancel</button>
+        </div>
+        <div class="success-msg" id="feedback-success">✓ Thanks — we'll take a look.</div>
+      </div>
+      <p class="tagline">Powered by residents, for residents</p>
     </div>
 
     <div id="section-submit" class="section">
       <div class="form-card">
-        <h2>Is your issue already listed?</h2>
-        <p>Check below first. Upvoting an existing issue carries more weight than a duplicate submission.</p>
-        <div id="similar-list"></div>
-        <div class="divider"></div>
-        <div class="info-strip">
-          <i class="ti ti-info-circle" aria-hidden="true"></i>
-          <span>Don't see it? Add it below. We'll take care of duplicates.</span>
-        </div>
+        <h2>Submit an issue</h2>
+        <p class="info-strip">We'll take care of any duplicates — just describe what's affecting you.</p>
         <label class="form-label">Issue title *</label>
         <input class="form-input" type="text" id="new-title" placeholder="e.g. Rooftop garden locked without notice">
         <label class="form-label">Supporting info *</label>
@@ -230,6 +233,9 @@
         <div class="success-msg" id="submit-success">✓ Submitted — thanks for flagging this.</div>
       </div>
     </div>
+  </div>
+  <div class="sticky-cta" id="sticky-cta">
+    <button class="fab" onclick="showSection('submit',null)">Submit issue</button>
   </div>
 </div>
 
@@ -269,7 +275,7 @@ async function loadData() {
   try {
     const bl = await fetch(SCRIPT_URL + '?action=getBacklog', {redirect:'follow'}).then(r => r.json());
     backlog = bl.filter(r => r.ID);
-    renderBacklog(); renderSimilarList(); updateStats();
+    renderBacklog(); updateStats();
   } catch(e) {
     document.getElementById('backlog-list').innerHTML = '<div class="empty">Could not load data. Please try refreshing.</div>';
     console.error(e);
@@ -305,7 +311,7 @@ function renderBacklog() {
       <div class="issue-footer">
         <span class="upvote-count"></span>
         <div style="display:flex;align-items:center;gap:6px;">
-          <span class="upvote-count" style="font-weight:500;color:var(--terra);">${votes}</span>
+          <span class="upvote-count" style="font-weight:500;color:var(--terra);">${votes} ${votes===1?'vote':'votes'}</span>
           <button class="upvote-btn ${voted?'voted':''}" onclick="vote(${item.ID})" id="vote-btn-${item.ID}">↑ ${voted?'Upvoted':'Upvote'}</button>
         </div>
       </div>
@@ -332,15 +338,7 @@ function setFilter(f,btn) {
   renderBacklog();
 }
 
-function renderSimilarList() {
-  document.getElementById('similar-list').innerHTML = backlog.filter(i=>i.Status!=='Resolved').map(item => {
-    const voted = userVotes[item.ID];
-    return `<div class="similar-item">
-      <div class="similar-text">${item.Title}</div>
-      <button class="similar-btn ${voted?'voted':''}" onclick="vote(${item.ID})">${voted?'↑ Upvoted':'↑ Upvote'}</button>
-    </div>`;
-  }).join('');
-}
+
 
 async function submitIssue() {
   const title = document.getElementById('new-title').value.trim();
@@ -368,21 +366,22 @@ async function submitIssue() {
 }
 
 function toggleFeedback() {
-  const form = document.getElementById('feedback-inline');
-  const visible = form.style.display === 'block';
-  form.style.display = visible ? 'none' : 'block';
-  if(!visible) document.getElementById('feedback-text').focus();
+  showSection('feedback', null);
+  setTimeout(()=>document.getElementById('feedback-text').focus(), 50);
 }
 
 async function submitFeedback() {
   const text = document.getElementById('feedback-text').value.trim();
   if(!text) { alert('Please write something first.'); return; }
+  const btn = document.getElementById('feedback-btn');
+  btn.disabled=true; btn.textContent='Sending…';
   try {
     await fetch(`${SCRIPT_URL}?action=feedback&feedback=${encodeURIComponent(text)}`, {redirect:"follow"});
     document.getElementById('feedback-text').value='';
     document.getElementById('feedback-success').style.display='block';
-    setTimeout(()=>{ document.getElementById('feedback-success').style.display='none'; document.getElementById('feedback-inline').style.display='none'; },3000);
+    setTimeout(()=>{ document.getElementById('feedback-success').style.display='none'; showBacklog(); },2000);
   } catch(e) { alert('Something went wrong. Please try again.'); }
+  btn.textContent='Send feedback'; btn.disabled=false;
 }
 
 function updateStats() {
@@ -394,12 +393,13 @@ function updateStats() {
 function showBacklog() {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('section-backlog').classList.add('active');
+  document.getElementById('sticky-cta').style.display = 'block';
 }
 
 function showSection(name) {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('section-'+name).classList.add('active');
-  if(name==='submit') renderSimilarList();
+
 }
 
 function openModal() { document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden'; }
