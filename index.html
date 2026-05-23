@@ -124,6 +124,8 @@
 
   .tagline { text-align: center; font-size: 12px; color: rgba(45,74,45,0.45); padding: 1.5rem 0 0.5rem; letter-spacing: 0.03em; }
   .loading, .empty { text-align: center; padding: 3rem 0; font-size: 15px; color: var(--ink-soft); }
+  .ptr-indicator { text-align: center; font-size: 13px; color: var(--ink-faint); padding: 0.75rem 0; display: none; transition: all 0.2s; }
+  .ptr-indicator.visible { display: block; }
 
   @media (max-width: 600px) {
     .topbar { padding: 0 1rem; }
@@ -181,6 +183,7 @@
     </div>
 
     <div id="section-backlog" class="section active">
+      <div class="ptr-indicator" id="ptr-indicator">↓ Pull to refresh</div>
       <div class="toolbar">
         <input class="search" type="text" placeholder="Search issues…" id="search" oninput="renderBacklog()">
         <div class="filters">
@@ -400,6 +403,57 @@ function showBacklog() {
   document.getElementById('section-backlog').classList.add('active');
   document.getElementById('sticky-cta').style.display = 'block';
 }
+
+async function refreshBacklog() {
+  try {
+    const bl = await fetch(SCRIPT_URL + '?action=getBacklog', {redirect:'follow'}).then(r => r.json());
+    const freshItems = bl.filter(r => r.ID);
+    const newItems = backlog.filter(i => i._new);
+    backlog = [...newItems, ...freshItems.filter(f => !newItems.find(n => n.ID == f.ID))];
+    renderBacklog(); updateStats();
+  } catch(e) {}
+}
+
+setInterval(() => {
+  if (sessionStorage.getItem(SESSION_KEY) === '1') refreshBacklog();
+}, 45000);
+
+let ptrStartY = 0;
+let ptrTriggered = false;
+const ptrThreshold = 80;
+
+document.addEventListener('touchstart', e => {
+  if (window.scrollY === 0 && document.getElementById('section-backlog').classList.contains('active')) {
+    ptrStartY = e.touches[0].clientY;
+    ptrTriggered = false;
+  }
+}, { passive: true });
+
+document.addEventListener('touchmove', e => {
+  if (!ptrStartY) return;
+  const dist = e.touches[0].clientY - ptrStartY;
+  const indicator = document.getElementById('ptr-indicator');
+  if (dist > 20 && window.scrollY === 0) {
+    indicator.classList.add('visible');
+    indicator.textContent = dist > ptrThreshold ? '↑ Release to refresh' : '↓ Pull to refresh';
+    ptrTriggered = dist > ptrThreshold;
+  }
+}, { passive: true });
+
+document.addEventListener('touchend', () => {
+  const indicator = document.getElementById('ptr-indicator');
+  if (ptrTriggered) {
+    indicator.textContent = 'Refreshing…';
+    refreshBacklog().then(() => {
+      indicator.textContent = '✓ Updated';
+      setTimeout(() => indicator.classList.remove('visible'), 1200);
+    });
+  } else {
+    indicator.classList.remove('visible');
+  }
+  ptrStartY = 0;
+  ptrTriggered = false;
+});
 
 function showSection(name) {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
