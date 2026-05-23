@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wicks Place — Resident Backlog</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F2EC;
+    --ink: #1A1814;
+    --ink-soft: #6B6860;
+    --ink-faint: #B8B5AE;
+    --white: #FFFFFF;
+    --border: rgba(26,24,20,0.1);
+    --border-strong: rgba(26,24,20,0.2);
+    --open-bg: #E8F0FF;
+    --open-fg: #1A3A8F;
+    --progress-bg: #FFF3DC;
+    --progress-fg: #7A4F00;
+    --resolved-bg: #E6F5EE;
+    --resolved-fg: #1A5C38;
+    --pending-bg: #F0EEFF;
+    --pending-fg: #3D1F9E;
+    --submitted-bg: #FFF3DC;
+    --submitted-fg: #7A4F00;
+    --agenda-bg: #E6F5EE;
+    --agenda-fg: #1A5C38;
+    --accent: #2B5BFF;
+    --accent-light: #E8EEFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; }
+
+  /* ACCESS GATE */
+  #gate {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  .gate-card {
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  .gate-card h1 { font-family: 'DM Serif Display', serif; font-size: 28px; font-weight: 400; margin-bottom: 8px; }
+  .gate-card p { font-size: 14px; color: var(--ink-soft); margin-bottom: 2rem; line-height: 1.6; }
+  .gate-input {
+    width: 100%;
+    font-size: 16px;
+    padding: 12px 16px;
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    text-align: center;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+    outline: none;
+  }
+  .gate-input:focus { border-color: var(--accent); }
+  .gate-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .gate-btn:hover { opacity: 0.85; }
+  .gate-error { font-size: 13px; color: #C0392B; margin-top: 10px; display: none; }
+
+  /* MAIN APP */
+  #app { display: none; }
+  .topbar {
+    background: var(--white);
+    border-bottom: 0.5px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar-title { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; }
+  .topbar-sub { font-size: 12px; color: var(--ink-soft); margin-top: 1px; }
+  .nav { display: flex; gap: 4px; }
+  .nav-btn {
+    padding: 6px 14px;
+    font-size: 13px;
+    border: 0.5px solid transparent;
+    border-radius: 8px;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .nav-btn:hover { background: var(--cream); color: var(--ink); }
+  .nav-btn.active { background: var(--ink); color: var(--white); }
+
+  .container { max-width: 720px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* STATS */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2rem; }
+  .stat { background: var(--white); border: 0.5px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+  .stat-val { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; color: var(--ink); }
+  .stat-label { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+
+  /* SECTION */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* TOOLBAR */
+  .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
+  .search {
+    flex: 1;
+    min-width: 180px;
+    font-size: 14px;
+    padding: 8px 14px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+  .search:focus { border-color: var(--accent); }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-btn {
+    font-size: 12px;
+    padding: 5px 12px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 20px;
+    background: var(--white);
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .filter-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .filter-btn.active { background: var(--ink); color: var(--white); border-color: var(--ink); }
+
+  /* BACKLOG CARD */
+  .issue-card {
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 10px;
+    transition: border-color 0.15s;
+  }
+  .issue-card:hover { border-color: var(--border-strong); }
+  .issue-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .issue-title { font-size: 15px; font-weight: 500; color: var(--ink); flex: 1; line-height: 1.4; }
+  .badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-open { background: var(--open-bg); color: var(--open-fg); }
+  .badge-inprogress { background: var(--progress-bg); color: var(--progress-fg); }
+  .badge-resolved { background: var(--resolved-bg); color: var(--resolved-fg); }
+  .badge-pending { background: var(--pending-bg); color: var(--pending-fg); }
+  .badge-submitted { background: var(--submitted-bg); color: var(--submitted-fg); }
+  .badge-agenda { background: var(--agenda-bg); color: var(--agenda-fg); }
+  .issue-info { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.5; }
+  .issue-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 0.5px solid var(--border); }
+  .issue-meta { font-size: 12px; color: var(--ink-faint); }
+  .upvote-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    padding: 6px 16px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 8px;
+    background: none;
+    color: var(--ink-soft);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .upvote-btn:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .upvote-btn.voted { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .upvote-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .upvote-count { font-size: 13px; color: var(--ink-soft); }
+
+  /* SUBMIT FORM */
+  .form-card {
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .form-card h2 { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; margin-bottom: 6px; }
+  .form-card > p { font-size: 14px; color: var(--ink-soft); margin-bottom: 1.25rem; line-height: 1.6; }
+  .similar-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--cream);
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+  .similar-text { font-size: 13px; color: var(--ink); flex: 1; line-height: 1.4; }
+  .similar-btn {
+    font-size: 12px;
+    padding: 5px 12px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 8px;
+    background: var(--white);
+    color: var(--ink-soft);
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+  .similar-btn:hover { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .similar-btn.voted { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
+  .divider { border-top: 0.5px solid var(--border); margin: 1.25rem 0; }
+  .form-label { font-size: 13px; color: var(--ink-soft); margin-bottom: 5px; display: block; }
+  .form-input, .form-textarea {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px 14px;
+    border: 0.5px solid var(--border-strong);
+    border-radius: 10px;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    margin-bottom: 14px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); background: var(--white); }
+  .form-textarea { min-height: 90px; resize: vertical; }
+  .form-submit {
+    padding: 10px 24px;
+    background: var(--ink);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .form-submit:hover { opacity: 0.8; }
+  .form-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* MOTION CARD */
+  .motion-card {
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 10px;
+  }
+  .motion-title { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .motion-why { font-size: 13px; color: var(--ink-soft); margin-bottom: 12px; line-height: 1.6; }
+  .motion-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 0.5px solid var(--border); font-size: 12px; color: var(--ink-faint); }
+
+  /* NOTICE */
+  .notice {
+    background: #FFF8E8;
+    border: 0.5px solid #F0D080;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #7A5500;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  /* LOADING / EMPTY */
+  .loading { text-align: center; padding: 3rem 0; font-size: 14px; color: var(--ink-faint); }
+  .empty { text-align: center; padding: 3rem 0; font-size: 14px; color: var(--ink-faint); }
+  .success-msg { font-size: 13px; color: var(--resolved-fg); margin-top: 10px; display: none; }
+
+  @media (max-width: 600px) {
+    .topbar { padding: 0 1rem; }
+    .topbar-title { font-size: 16px; }
+    .nav-btn span { display: none; }
+    .stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat { padding: 1rem; }
+    .stat-val { font-size: 24px; }
+    .container { padding: 1.25rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ACCESS GATE -->
+<div id="gate">
+  <div class="gate-card">
+    <h1>Wicks Place</h1>
+    <p>Resident Backlog — issues, priorities, and AGM motions for owners and residents.<br><br>Enter the access code to continue.</p>
+    <input class="gate-input" type="password" id="gate-input" placeholder="Access code" autocomplete="off">
+    <button class="gate-btn" onclick="checkCode()">Enter</button>
+    <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">Wicks Place — Resident Backlog</div>
+    </div>
+    <nav class="nav">
+      <button class="nav-btn active" onclick="showSection('backlog', this)">Backlog</button>
+      <button class="nav-btn" onclick="showSection('submit', this)">Submit issue</button>
+      <button class="nav-btn" onclick="showSection('agm', this)">AGM</button>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="stats">
+      <div class="stat"><div class="stat-val" id="stat-open">—</div><div class="stat-label">Open issues</div></div>
+      <div class="stat"><div class="stat-val" id="stat-upvotes">—</div><div class="stat-label">Upvotes cast</div></div>
+      <div class="stat"><div class="stat-val" id="stat-motions">—</div><div class="stat-label">AGM items</div></div>
+    </div>
+
+    <!-- BACKLOG -->
+    <div id="section-backlog" class="section active">
+      <div class="toolbar">
+        <input class="search" type="text" placeholder="Search issues…" id="search" oninput="renderBacklog()">
+        <div class="filters">
+          <button class="filter-btn active" onclick="setFilter('All', this)">All</button>
+          <button class="filter-btn" onclick="setFilter('Open', this)">Open</button>
+          <button class="filter-btn" onclick="setFilter('In progress', this)">In progress</button>
+          <button class="filter-btn" onclick="setFilter('Resolved', this)">Resolved</button>
+        </div>
+      </div>
+      <div id="backlog-list"><div class="loading">Loading issues…</div></div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div id="section-submit" class="section">
+      <div class="form-card">
+        <h2>Is your issue already listed?</h2>
+        <p>Check below first. If you see your issue, upvote it — it carries more weight than a duplicate submission.</p>
+        <div id="similar-list"></div>
+        <div class="divider"></div>
+        <p style="font-size:14px; color:var(--ink-soft); margin-bottom:1.25rem;">Don't see your issue above? Add it here.</p>
+        <label class="form-label">Issue title *</label>
+        <input class="form-input" type="text" id="new-title" placeholder="e.g. Rooftop garden locked without notice">
+        <label class="form-label">Supporting info</label>
+        <textarea class="form-textarea" id="new-info" placeholder="Any context that helps — how long it's been happening, how it affects you, which floors or units are impacted…"></textarea>
+        <label class="form-label">Your lot number (optional)</label>
+        <input class="form-input" type="text" id="new-lot" placeholder="e.g. 14B" style="max-width:160px">
+        <br>
+        <button class="form-submit" id="submit-btn" onclick="submitIssue()">Submit issue</button>
+        <div class="success-msg" id="submit-success">✓ Submitted — thanks. We'll review it shortly.</div>
+      </div>
+    </div>
+
+    <!-- AGM -->
+    <div id="section-agm" class="section">
+      <div class="notice">
+        ⚠️ AGM expected July 2025. This is a list of things residents want raised — it's not the official agenda. The official agenda gets locked in before the meeting, so the earlier we have these documented the better.
+      </div>
+      <div id="motion-list"><div class="loading">Loading…</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4Mc1Q4PWd31KZyOfS4SsGQThW4SPTB5Tq6HIDNSC1yK8V5d4gE-2ttJzMGPO_tOY/exec';
+const ACCESS_CODE = 'innerwestisbest';
+
+let backlog = [];
+let motions = [];
+let activeFilter = 'All';
+const userVotes = {};
+
+// --- ACCESS GATE ---
+document.getElementById('gate-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkCode(); });
+
+function checkCode() {
+  const val = document.getElementById('gate-input').value.trim().toLowerCase();
+  if (val === ACCESS_CODE) {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    loadData();
+  } else {
+    document.getElementById('gate-error').style.display = 'block';
+    document.getElementById('gate-input').value = '';
+    document.getElementById('gate-input').focus();
+  }
+}
+
+// --- DATA ---
+async function loadData() {
+  try {
+    const [bl, mt] = await Promise.all([
+      fetch(SCRIPT_URL + '?action=getBacklog').then(r => r.json()),
+      fetch(SCRIPT_URL + '?action=getMotions').then(r => r.json())
+    ]);
+    backlog = bl.filter(r => r.ID);
+    motions = mt.filter(r => r.ID);
+    renderBacklog();
+    renderSimilarList();
+    renderMotions();
+    updateStats();
+  } catch(e) {
+    document.getElementById('backlog-list').innerHTML = '<div class="empty">Could not load data. Please try refreshing.</div>';
+  }
+}
+
+// --- BACKLOG ---
+function statusBadge(s) {
+  if (!s) return '';
+  const map = {
+    'Open': 'badge-open',
+    'In progress': 'badge-inprogress',
+    'Resolved': 'badge-resolved'
+  };
+  return `<span class="badge ${map[s] || 'badge-open'}">${s}</span>`;
+}
+
+function renderBacklog() {
+  const q = (document.getElementById('search').value || '').toLowerCase();
+  const filtered = backlog
+    .filter(i => (activeFilter === 'All' || i.Status === activeFilter) && (!q || i.Title.toLowerCase().includes(q)))
+    .sort((a, b) => (Number(b.Upvotes) || 0) - (Number(a.Upvotes) || 0));
+
+  const list = document.getElementById('backlog-list');
+  if (!filtered.length) { list.innerHTML = '<div class="empty">No issues match this filter.</div>'; return; }
+
+  list.innerHTML = filtered.map(item => {
+    const votes = Number(item.Upvotes) || 0;
+    const feedback = Number(item['Feedback count']) || 0;
+    const voted = userVotes[item.ID];
+    return `<div class="issue-card">
+      <div class="issue-top">
+        <div class="issue-title">${item.Title}</div>
+        ${statusBadge(item.Status)}
+      </div>
+      ${item['Supporting info'] ? `<div class="issue-info">${item['Supporting info']}</div>` : ''}
+      <div class="issue-footer">
+        <div class="upvote-count">${feedback > 0 ? `${feedback} ${feedback === 1 ? 'resident' : 'residents'} reported this` : ''}</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="upvote-count">${votes} ${votes === 1 ? 'upvote' : 'upvotes'}</span>
+          <button class="upvote-btn ${voted ? 'voted' : ''}" onclick="vote(${item.ID})" id="vote-btn-${item.ID}">
+            ↑ ${voted ? 'Upvoted' : 'Upvote'}
+          </button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function vote(id) {
+  const btn = document.getElementById('vote-btn-' + id);
+  btn.disabled = true;
+  const item = backlog.find(i => i.ID == id);
+  const delta = userVotes[id] ? -1 : 1;
+  if (userVotes[id]) { delete userVotes[id]; item.Upvotes = (Number(item.Upvotes) || 0) - 1; }
+  else { userVotes[id] = true; item.Upvotes = (Number(item.Upvotes) || 0) + 1; }
+  renderBacklog();
+  renderSimilarList();
+  updateStats();
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'upvote', id, delta })
+    });
+  } catch(e) { console.log('Upvote write failed silently'); }
+}
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBacklog();
+}
+
+// --- SUBMIT ---
+function renderSimilarList() {
+  const open = backlog.filter(i => i.Status !== 'Resolved');
+  document.getElementById('similar-list').innerHTML = open.map(item => {
+    const voted = userVotes[item.ID];
+    return `<div class="similar-item">
+      <div class="similar-text">${item.Title}</div>
+      <button class="similar-btn ${voted ? 'voted' : ''}" onclick="vote(${item.ID})">${voted ? '↑ Upvoted' : '↑ Upvote'}</button>
+    </div>`;
+  }).join('');
+}
+
+async function submitIssue() {
+  const title = document.getElementById('new-title').value.trim();
+  if (!title) { alert('Please enter an issue title.'); return; }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify({
+        action: 'submit',
+        title,
+        supportingInfo: document.getElementById('new-info').value.trim(),
+        lot: document.getElementById('new-lot').value.trim()
+      })
+    });
+    document.getElementById('new-title').value = '';
+    document.getElementById('new-info').value = '';
+    document.getElementById('new-lot').value = '';
+    document.getElementById('submit-success').style.display = 'block';
+    btn.textContent = 'Submit issue';
+    btn.disabled = false;
+    setTimeout(() => document.getElementById('submit-success').style.display = 'none', 4000);
+  } catch(e) {
+    btn.textContent = 'Submit issue';
+    btn.disabled = false;
+    alert('Something went wrong. Please try again.');
+  }
+}
+
+// --- MOTIONS ---
+function motionBadge(s) {
+  if (!s) return '';
+  const map = { 'Pending': 'badge-pending', 'Submitted': 'badge-submitted', 'On the agenda': 'badge-agenda' };
+  return `<span class="badge ${map[s] || 'badge-pending'}">${s}</span>`;
+}
+
+function renderMotions() {
+  const list = document.getElementById('motion-list');
+  if (!motions.length) { list.innerHTML = '<div class="empty">No AGM items yet.</div>'; return; }
+  list.innerHTML = motions.map(m => `
+    <div class="motion-card">
+      <div class="issue-top">
+        <div class="motion-title">${m['What we want']}</div>
+        ${motionBadge(m.Status)}
+      </div>
+      ${m['Why it matters'] ? `<div class="motion-why">${m['Why it matters']}</div>` : ''}
+    </div>`).join('');
+  document.getElementById('stat-motions').textContent = motions.length;
+}
+
+// --- STATS ---
+function updateStats() {
+  document.getElementById('stat-open').textContent = backlog.filter(i => i.Status === 'Open').length;
+  document.getElementById('stat-upvotes').textContent = backlog.reduce((s, i) => s + (Number(i.Upvotes) || 0), 0);
+}
+
+// --- NAV ---
+function showSection(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'submit') renderSimilarList();
+}
+</script>
+</body>
+</html>
