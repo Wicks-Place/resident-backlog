@@ -28,32 +28,26 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--cream); font-family: 'DM Sans', system-ui, sans-serif; color: var(--ink); min-height: 100vh; -webkit-font-smoothing: antialiased; }
-
-  /* GATE */
   #gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; background: var(--charcoal); }
   .gate-card { background: transparent; border-radius: 16px; padding: 2.5rem; max-width: 380px; width: 100%; text-align: center; }
   .gate-logo { margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; }
-  .gate-card h1 { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: var(#fff); letter-spacing: -0.2px; }
-  .gate-sub { font-size: 14px; color: var(--ink-muted); margin-bottom: 1.75rem; line-height: 1.6; }
-  .gate-input { width: 100%; font-size: 15px; padding: 11px 16px; border: 1px solid var(--card-edge); border-radius: 999px; background: var(--cream); color: var(--ink); font-family: 'DM Sans', sans-serif; text-align: center; letter-spacing: 0.05em; margin-bottom: 10px; outline: none; transition: border-color 0.15s; }
-  .gate-input:focus { border-color: var(--green); }
+  .gate-card h1 { font-size: 19px; font-weight: 600; margin-bottom: 6px; color: var(--cream); letter-spacing: -0.2px; }
+  .gate-sub { font-size: 14px; color: rgba(255,255,255,0.55); margin-bottom: 1.75rem; line-height: 1.6; }
+  .gate-input { width: 100%; font-size: 15px; padding: 11px 16px; border: 1px solid rgba(255,255,255,0.15); border-radius: 999px; background: rgba(255,255,255,0.08); color: #fff; font-family: 'DM Sans', sans-serif; text-align: center; letter-spacing: 0.05em; margin-top: 2rem; margin-bottom: 10px; outline: none; transition: border-color 0.15s; }
+  .gate-input::placeholder { color: rgba(255,255,255,0.35); }
+  .gate-input:focus { border-color: rgba(255,255,255,0.4); }
   .gate-btn { width: 100%; padding: 11px; background: var(--green); color: #fff; border: none; border-radius: 999px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; }
   .gate-btn:hover { background: var(--green-soft); }
-  .gate-error { font-size: 13px; color: var(--rust); margin-top: 10px; display: none; }
-  .gate-tagline { font-size: 11px; color: var(--ink-faint); margin-top: 1.5rem; }
-
-  /* APP */
+  .gate-error { font-size: 13px; color: var(--rust-soft); margin-top: 10px; display: none; }
+  .gate-tagline { font-size: 11px; color: rgba(255,255,255,0.3); margin-top: 1.5rem; }
+  .gate-tagline .tagline-link { color: rgba(255,255,255,0.45); }
   #app { display: none; }
-
-  /* TOPBAR */
   .topbar { background: var(--green); padding: 13px 28px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
   .brand { display: flex; align-items: center; gap: 9px; cursor: pointer; }
   .brand-name { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: -0.1px; }
   .brand-sub { font-size: 13.5px; color: rgba(255,255,255,0.58); margin-left: 3px; }
   .hiw-btn { background: transparent; border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.85); padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; }
   .hiw-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
-
-  /* MODAL */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20,20,18,0.5); z-index: 100; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
   .modal-overlay.open { display: flex; }
   .modal { background: var(--card); border-radius: 16px; max-width: 520px; width: 100%; padding: 2rem 2rem 1.75rem; margin: auto; }
@@ -64,25 +58,17 @@
   .modal-body p { font-size: 14.5px; color: var(--ink-muted); line-height: 1.7; margin-bottom: 1rem; }
   .modal-body p:last-child { margin-bottom: 0; }
   .modal-body a { color: var(--green); font-weight: 500; cursor: pointer; text-decoration: underline; }
-
-  /* CONTAINER */
   .container { max-width: 680px; margin: 0 auto; padding: 28px 24px 90px; }
-
-  /* TITLE BLOCK */
   .title-block { margin-bottom: 20px; }
   .title-block h1 { font-size: 24px; font-weight: 600; color: var(--ink); letter-spacing: -0.4px; margin-bottom: 7px; line-height: 1.2; }
   .title-block p { font-size: 13.5px; color: var(--ink-muted); line-height: 1.55; margin: 0; }
-
-  /* SECTION */
   .section { display: none; }
   .section.active { display: block; }
-
-  /* TOOLBAR */
   .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-  .search-wrap { flex: 1; min-width: 160px; max-width: 280px; position: relative; }
+  .search-wrap { flex: 0 0 100%; position: relative; margin-bottom: 6px; }
   .search-icon-wrap { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); display: flex; pointer-events: none; }
-  .search { width: 100%; height: 34px; font-size: 13.5px; padding: 0 32px 0 34px; border: 1px solid var(--card-edge); border-radius: 999px; background: var(--card); color: var(--ink); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.15s; }
-  .search:focus { border-color: var(--green); }
+  .search { width: 100%; height: 34px; font-size: 13.5px; padding: 0 32px 0 34px; border: 1px solid var(--card-edge); border-radius: 999px; background: transparent; color: var(--ink); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.15s; }
+  .search:focus { border-color: var(--green); background: var(--card); }
   .search-clear { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--ink-faint); cursor: pointer; padding: 0; font-size: 14px; display: none; line-height: 1; }
   .filter-row { display: flex; gap: 6px; flex-wrap: wrap; }
   .fpill { display: inline-flex; align-items: center; gap: 5px; height: 34px; padding: 0 13px; border-radius: 999px; border: 1px solid var(--card-edge); background: transparent; color: var(--ink); font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
@@ -90,36 +76,24 @@
   .fpill.active { background: var(--green); color: #fff; border-color: transparent; }
   .fpill-count { font-size: 11px; font-weight: 600; opacity: 0.55; font-variant-numeric: tabular-nums; }
   .fpill.active .fpill-count { opacity: 0.75; }
-
-  /* ISSUE CARD */
   .issue-card { display: flex; gap: 14px; background: var(--card); border: 1px solid var(--card-edge); border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; align-items: flex-start; transition: border-color 0.15s; }
   .issue-card:hover { border-color: rgba(46,74,44,0.18); }
   .issue-card.is-new { border-color: var(--rust); }
-
-  /* UPVOTE PILL */
   .upvote-pill { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; width: 52px; min-height: 60px; padding: 9px 0; border-radius: 10px; border: 1.5px solid var(--card-edge); background: transparent; color: var(--ink); font-family: 'DM Sans', sans-serif; cursor: pointer; flex-shrink: 0; transition: all 0.15s; font-variant-numeric: tabular-nums; }
   .upvote-pill:hover { background: var(--cream-soft); border-color: var(--moss); }
   .upvote-pill.voted { background: var(--moss-soft); color: var(--green-deep); border-color: transparent; }
   .upvote-pill:disabled { opacity: 0.4; cursor: not-allowed; }
   .upvote-num { font-size: 13px; font-weight: 600; line-height: 1; }
-
-  /* CARD CONTENT */
   .card-content { flex: 1; min-width: 0; }
   .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
   .card-title { font-size: 15px; font-weight: 600; color: var(--ink); letter-spacing: -0.1px; line-height: 1.35; }
   .card-body { font-size: 13px; color: var(--ink-muted); line-height: 1.55; }
-
-  /* BADGE */
   .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 500; letter-spacing: 0.1px; white-space: nowrap; flex-shrink: 0; line-height: 1; }
   .badge-dot { width: 5px; height: 5px; border-radius: 999px; opacity: 0.85; flex-shrink: 0; }
-  .badge-open { background: var(--moss-soft); color: var(--moss); }
-  .badge-open .badge-dot { background: var(--moss); }
   .badge-inprogress { background: var(--amber-soft); color: var(--amber); }
   .badge-inprogress .badge-dot { background: var(--amber); }
   .badge-resolved { background: rgba(108,103,96,0.12); color: var(--ink-muted); }
   .badge-resolved .badge-dot { background: var(--ink-muted); }
-
-  /* FORM */
   .form-card { background: var(--card); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; border: 1px solid var(--card-edge); }
   .form-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 5px; letter-spacing: -0.1px; }
   .form-card > p { font-size: 13.5px; color: var(--ink-muted); margin-bottom: 1.25rem; line-height: 1.6; }
@@ -134,23 +108,15 @@
   .btn-primary:hover { background: var(--rust-deep); }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
   .success-msg { font-size: 13px; color: var(--moss); margin-top: 10px; display: none; font-weight: 500; }
-  .info-strip { font-size: 13px; color: var(--ink-muted); border-left: 2px solid var(--rust); padding: 3px 0 3px 10px; margin-bottom: 1rem; line-height: 1.5; font-style: italic; }
-
-  /* FOOTER */
   .tagline { text-align: center; font-size: 12px; color: var(--ink-faint); padding: 1.5rem 0 0.5rem; }
   .tagline-link { background: none; border: none; color: var(--ink-muted); font-size: 12px; font-family: 'DM Sans', sans-serif; cursor: pointer; text-decoration: none; }
   .tagline-link:hover { color: var(--ink); }
-
-  /* EMPTY / LOADING */
   .empty { padding: 2.5rem 1rem; text-align: center; color: var(--ink-muted); font-size: 13.5px; background: var(--card); border-radius: 12px; border: 1px dashed var(--card-edge); }
   .loading { text-align: center; padding: 3rem 0; font-size: 14px; color: var(--ink-faint); }
-
-  /* STICKY CTA */
   .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: var(--cream); border-top: 1px solid var(--card-edge); padding: 10px 0 14px; z-index: 50; }
   .sticky-inner { max-width: 680px; margin: 0 auto; padding: 0 24px; }
   .fab { display: block; width: 100%; background: var(--rust); color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; text-align: center; box-shadow: 0 4px 18px rgba(185,94,46,0.35), 0 1px 4px rgba(185,94,46,0.2); transition: all 0.15s; }
   .fab:hover { background: var(--rust-deep); transform: translateY(-1px); }
-
   @media (max-width: 600px) {
     .topbar { padding: 12px 16px; }
     .brand-sub { display: none; }
@@ -164,7 +130,6 @@
 </head>
 <body>
 
-<!-- GATE -->
 <div id="gate">
   <div class="gate-card">
     <div class="gate-logo">
@@ -174,7 +139,6 @@
       </svg>
     </div>
     <h1>Wicks Place Resident Backlog</h1>
-    <p class="gate-sub">Issues, priorities and updates for owners and residents. Enter the access code to continue.</p>
     <input class="gate-input" type="text" id="gate-input" placeholder="Access code" autocomplete="off">
     <button class="gate-btn" onclick="checkCode()">Enter</button>
     <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
@@ -182,7 +146,6 @@
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
   <div class="topbar">
     <div class="brand" onclick="showBacklog()">
@@ -196,7 +159,6 @@
     <button class="hiw-btn" onclick="openModal()">How it works</button>
   </div>
 
-  <!-- HOW IT WORKS MODAL -->
   <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
     <div class="modal">
       <div class="modal-header">
@@ -216,7 +178,6 @@
 
   <div class="container">
 
-    <!-- BACKLOG -->
     <div id="section-backlog" class="section active">
       <div class="title-block">
         <h1>What needs fixing?</h1>
@@ -233,15 +194,12 @@
         <div class="filter-row" id="filter-row"></div>
       </div>
       <div id="backlog-list"><div class="loading">Loading issues…</div></div>
-
       <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
     </div>
 
-    <!-- SUBMIT -->
     <div id="section-submit" class="section">
       <div class="form-card">
         <h2>Raise an issue</h2>
-        <p>We'll handle duplicate and similar issues, merging or removing them to keep things clean.</p>
         <label class="form-label">Title *</label>
         <input class="form-input" type="text" id="new-title" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="What's the problem?">
         <label class="form-label">A bit more detail *</label>
@@ -266,7 +224,6 @@
       <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
     </div>
 
-    <!-- FEEDBACK -->
     <div id="section-feedback" class="section">
       <div class="form-card">
         <h2>Give feedback</h2>
@@ -286,7 +243,7 @@
 
   <div class="sticky-cta" id="sticky-cta">
     <div class="sticky-inner">
-      <button class="fab" onclick="showSection('submit')">Submit issue</button>
+      <button class="fab" onclick="showSection('submit')">Post issue</button>
     </div>
   </div>
 </div>
@@ -308,6 +265,7 @@ window.addEventListener('load', () => {
     document.getElementById('gate').style.display='none';
     document.getElementById('app').style.display='block';
     window.scrollTo(0,0);
+    renderFilterPills();
     loadData();
   }
 });
@@ -321,6 +279,7 @@ function checkCode() {
     document.getElementById('gate').style.display='none';
     document.getElementById('app').style.display='block';
     window.scrollTo(0,0);
+    renderFilterPills();
     loadData();
   } else {
     document.getElementById('gate-error').style.display='block';
@@ -485,7 +444,7 @@ async function submitIssue() {
     const name = document.getElementById('new-name').value.trim();
     const unit = document.getElementById('new-unit').value.trim();
     const params = new URLSearchParams({action:'submit',title,supportingInfo:info,name,unit});
-    const resp = await fetch(SCRIPT_URL+'?'+params,{redirect:'follow',mode:'no-cors'});
+    await fetch(SCRIPT_URL+'?'+params,{redirect:'follow',mode:'no-cors'});
     const newItem = {ID:Date.now(),Title:title,'Supporting info':info,Status:'Open',Upvotes:0,_new:true};
     backlog.unshift(newItem);
     document.getElementById('new-title').value='';
@@ -501,8 +460,6 @@ async function submitIssue() {
   } catch(e) { alert('Something went wrong. Please try again.'); }
   btn.textContent='Post issue'; btn.disabled=false;
 }
-
-
 
 async function submitFeedbackSection() {
   const text = document.getElementById('feedback-textarea').value.trim();
