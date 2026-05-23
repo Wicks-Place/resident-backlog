@@ -117,8 +117,9 @@
   .feedback-cancel:hover { color: var(--ink-soft); }
   .feedback-success { font-size: 13px; color: var(--resolved-fg); margin-top: 8px; display: none; font-weight: 500; }
 
-  .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: #E8E0D4; padding: 12px 1.5rem 16px; border-top: 0.5px solid rgba(26,24,20,0.1); z-index: 50; }
-  .fab { display: block; width: 100%; max-width: 720px; margin: 0 auto; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 16px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.35), 0 2px 8px rgba(45,74,45,0.25); transition: all 0.15s; text-align: center; }
+  .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: #E8E0D4; padding: 12px 0 16px; border-top: 0.5px solid rgba(26,24,20,0.1); z-index: 50; }
+  .sticky-inner { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; }
+  .fab { display: block; width: 100%; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 16px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.35), 0 2px 8px rgba(45,74,45,0.25); transition: all 0.15s; text-align: center; }
   .fab:hover { background: var(--green-light); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(180,220,80,0.45), 0 2px 10px rgba(45,74,45,0.3); }
 
   .tagline { text-align: center; font-size: 12px; color: rgba(45,74,45,0.45); padding: 1.5rem 0 0.5rem; letter-spacing: 0.03em; }
@@ -131,6 +132,7 @@
     .stat { padding: 0.9rem 1rem; }
     .stat-val { font-size: 24px; }
     .container { padding: 1.25rem 1rem 6rem; }
+    .sticky-inner { padding: 0 1rem; }
     .modal-overlay { padding: 1rem; }
     .modal { padding: 1.5rem; }
   }
@@ -166,7 +168,7 @@
         <p>This is a resident-maintained issue register for Wicks Place. One central place where owners and residents can log issues, see what others have raised, and understand how widely a problem is felt.</p>
         <p>It exists because building management works better with clear, direct feedback from the people who live here. This backlog gives our building manager and strata committee a prioritised, living list of what matters to residents, and it's updated in real time.</p>
         <p>When you upvote an issue, you're adding weight to it. The more upvotes an issue has, the easier it is to see its level of importance, and have action prioritised for it accordingly.</p>
-        <p>If you have any thoughts or suggestions about the backlog, please <a onclick="closeModal();showSection('feedback',null);setTimeout(()=>document.getElementById('feedback-text').focus(),50)">share your feedback</a>.</p>
+        <p>If you have any thoughts or suggestions about the backlog, please <a onclick="closeModal();showSection('feedback',null);setTimeout(()=>document.getElementById('feedback-textarea').focus(),50)">share your feedback</a>.</p>
       </div>
     </div>
   </div>
@@ -191,7 +193,7 @@
       <div id="backlog-list"><div class="loading">Loading issues…</div></div>
       <div id="feedback-inline" style="display:none">
         <div class="feedback-form-inline">
-          <textarea class="feedback-textarea-inline" id="feedback-text" placeholder="Tell us what's missing, wrong, or could be better…"></textarea>
+          <textarea class="feedback-textarea-inline" id="feedback-textarea" placeholder="Tell us what's missing, wrong, or could be better…"></textarea>
           <div style="display:flex;align-items:center;gap:10px;">
             <button class="feedback-submit-inline" onclick="submitFeedback()">Send feedback</button>
             <button class="feedback-cancel" onclick="toggleFeedback()">Cancel</button>
@@ -208,7 +210,7 @@
         <h2>Give feedback</h2>
         <p>Something missing from the backlog? Wrong priority? Let us know — your feedback helps keep this accurate.</p>
         <label class="form-label">Your feedback *</label>
-        <textarea class="form-textarea" id="feedback-text" placeholder="Tell us what's missing, wrong, or could be better…"></textarea>
+        <textarea class="form-textarea" id="feedback-textarea" placeholder="Tell us what's missing, wrong, or could be better…"></textarea>
         <div style="display:flex;align-items:center;gap:12px;">
           <button class="form-submit" id="feedback-btn" onclick="submitFeedback()">Send feedback</button>
           <button class="feedback-cancel" onclick="showBacklog()">Cancel</button>
@@ -221,11 +223,11 @@
     <div id="section-submit" class="section">
       <div class="form-card">
         <h2>Submit an issue</h2>
-        <p class="info-strip">We'll take care of duplicates, or merge similar issues.</p>
+        <p class="info-strip">We'll take care of any duplicates — just describe what's affecting you.</p>
         <label class="form-label">Issue title *</label>
-        <input class="form-input" type="text" id="new-title" placeholder="e.g. Gym locked without notice">
+        <input class="form-input" type="text" id="new-title" placeholder="e.g. Rooftop garden locked without notice">
         <label class="form-label">Supporting info *</label>
-        <textarea class="form-textarea" id="new-info" placeholder="How long it's been happening, which buildings or units are affected, any relevant context…"></textarea>
+        <textarea class="form-textarea" id="new-info" placeholder="How long it's been happening, which floors or units are affected, any relevant context…"></textarea>
         <div style="display:flex;align-items:center;gap:12px;">
           <button class="form-submit" id="submit-btn" onclick="submitIssue()">Submit issue</button>
           <button class="feedback-cancel" onclick="showBacklog()">Cancel</button>
@@ -235,7 +237,7 @@
     </div>
   </div>
   <div class="sticky-cta" id="sticky-cta">
-    <button class="fab" onclick="showSection('submit',null)">Submit issue</button>
+    <div class="sticky-inner"><button class="fab" onclick="showSection('submit',null)">Submit issue</button></div>
   </div>
 </div>
 
@@ -251,6 +253,7 @@ window.addEventListener('load', () => {
   if (sessionStorage.getItem(SESSION_KEY) === '1') {
     document.getElementById('gate').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    window.scrollTo(0, 0);
     loadData();
   }
 });
@@ -263,6 +266,7 @@ function checkCode() {
     sessionStorage.setItem(SESSION_KEY, '1');
     document.getElementById('gate').style.display = 'none';
     document.getElementById('app').style.display = 'block';
+    window.scrollTo(0, 0);
     loadData();
   } else {
     document.getElementById('gate-error').style.display = 'block';
@@ -367,17 +371,17 @@ async function submitIssue() {
 
 function toggleFeedback() {
   showSection('feedback', null);
-  setTimeout(()=>document.getElementById('feedback-text').focus(), 50);
+  setTimeout(()=>document.getElementById('feedback-textarea').focus(), 50);
 }
 
 async function submitFeedback() {
-  const text = document.getElementById('feedback-text').value.trim();
+  const text = document.getElementById('feedback-textarea').value.trim();
   if(!text) { alert('Please write something first.'); return; }
   const btn = document.getElementById('feedback-btn');
   btn.disabled=true; btn.textContent='Sending…';
   try {
     await fetch(`${SCRIPT_URL}?action=feedback&feedback=${encodeURIComponent(text)}`, {redirect:"follow"});
-    document.getElementById('feedback-text').value='';
+    document.getElementById('feedback-textarea').value='';
     document.getElementById('feedback-success').style.display='block';
     setTimeout(()=>{ document.getElementById('feedback-success').style.display='none'; showBacklog(); },2000);
   } catch(e) { alert('Something went wrong. Please try again.'); }
