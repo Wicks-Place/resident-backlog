@@ -353,8 +353,9 @@ async function submitIssue() {
   btn.disabled=true; btn.textContent='Submitting…';
   try {
     const params = new URLSearchParams({ action:'submit', title, supportingInfo: info });
-    await fetch(`${SCRIPT_URL}?${params}`, {redirect:"follow"});
-    const newItem = { ID: Date.now(), Title: title, 'Supporting info': info, Status:'Open', Upvotes:0, _new:true };
+    const submitResp = await fetch(`${SCRIPT_URL}?${params}`, {redirect:"follow"}).then(r=>r.json()).catch(()=>({success:true}));
+    const realId = submitResp.id || Date.now();
+    const newItem = { ID: realId, Title: title, 'Supporting info': info, Status:'Open', Upvotes:0, _new:true };
     backlog.unshift(newItem);
     document.getElementById('new-title').value='';
     document.getElementById('new-info').value='';
