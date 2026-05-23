@@ -255,7 +255,18 @@ const ACCESS_CODE = 'innerwestisbest';
 const SESSION_KEY = 'wp_auth';
 
 let backlog = [], activeFilter = 'All';
-const userVotes = {};
+
+function loadVotes() {
+  try { return JSON.parse(localStorage.getItem('wp_votes') || '{}'); }
+  catch(e) { return {}; }
+}
+
+function saveVotes(votes) {
+  try { localStorage.setItem('wp_votes', JSON.stringify(votes)); }
+  catch(e) {}
+}
+
+const userVotes = loadVotes();
 
 window.addEventListener('load', () => {
   if (sessionStorage.getItem(SESSION_KEY) === '1') {
@@ -348,6 +359,7 @@ async function vote(id) {
   const delta = userVotes[id] ? -1 : 1;
   if(userVotes[id]) { delete userVotes[id]; }
   else { userVotes[id] = true; }
+  saveVotes(userVotes);
   item.Upvotes = Math.max(0, (Number(item.Upvotes)||0) + delta);
   renderBacklog(); updateStats();
   try {
