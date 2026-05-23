@@ -198,7 +198,7 @@
         <div class="feedback-prompt-row">
           <div>
             <strong>How's this backlog looking?</strong>
-            <p>Missing something? Wrong priority? Let us know.</p>
+            <p>Is it missing something? Have an idea? Let us know.</p>
           </div>
           <button class="feedback-toggle-btn" onclick="toggleFeedback()">Give feedback</button>
         </div>
@@ -228,11 +228,8 @@
         <input class="form-input" type="text" id="new-title" placeholder="e.g. Rooftop garden locked without notice">
         <label class="form-label">Supporting info</label>
         <textarea class="form-textarea" id="new-info" placeholder="How long it's been happening, which floors or units are affected, any relevant context…"></textarea>
-        <label class="form-label">Your lot number (optional)</label>
-        <input class="form-input" type="text" id="new-lot" placeholder="e.g. 14B" style="max-width:160px">
-        <br>
         <button class="form-submit" id="submit-btn" onclick="submitIssue()">Submit issue</button>
-        <div class="success-msg" id="submit-success">✓ Submitted — we'll review it shortly.</div>
+        <div class="success-msg" id="submit-success">✓ Submitted — thanks for flagging this.</div>
       </div>
       <p class="tagline">Powered by residents, for residents</p>
     </div>
@@ -365,14 +362,23 @@ async function submitIssue() {
       action: 'submit',
       title,
       supportingInfo: document.getElementById('new-info').value.trim(),
-      lot: document.getElementById('new-lot').value.trim()
+
     });
     await fetch(`${SCRIPT_URL}?${params}`);
+    const newItem = {
+      ID: Date.now(),
+      Title: title,
+      'Supporting info': document.getElementById('new-info').value.trim(),
+      Status: 'Open',
+      Upvotes: 0,
+      'Feedback count': 1
+    };
+    backlog.unshift(newItem);
     document.getElementById('new-title').value='';
     document.getElementById('new-info').value='';
-    document.getElementById('new-lot').value='';
     document.getElementById('submit-success').style.display='block';
-    setTimeout(()=>document.getElementById('submit-success').style.display='none',4000);
+    updateStats();
+    setTimeout(()=>{ document.getElementById('submit-success').style.display='none'; showSection('backlog', document.querySelectorAll('.nav-btn')[0]); },2000);
   } catch(e) { alert('Something went wrong. Please try again.'); }
   btn.textContent='Submit issue'; btn.disabled=false;
 }
