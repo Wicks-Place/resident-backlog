@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wicks Place — Resident Backlog</title>
+<title>Wicks Place Resident Backlog</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -23,15 +23,11 @@
     --open-bg: #EDF3FF; --open-fg: #1A3A8F;
     --progress-bg: #FFF3DC; --progress-fg: #7A4F00;
     --resolved-bg: #E6F5EE; --resolved-fg: #1A5C38;
-    --pending-bg: #F0EEFF; --pending-fg: #3D1F9E;
-    --submitted-bg: #FFF3DC; --submitted-fg: #7A4F00;
-    --agenda-bg: #E6F5EE; --agenda-fg: #1A5C38;
     --card-bg: #FAF8F5;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--page-bg); font-family: 'DM Sans', sans-serif; color: var(--ink); min-height: 100vh; }
 
-  /* GATE */
   #gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; background: var(--charcoal); }
   .gate-card { background: var(--white); border-radius: 18px; padding: 2.5rem; max-width: 380px; width: 100%; text-align: center; }
   .gate-logo { width: 52px; height: 52px; background: var(--green); border-radius: 14px; margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; font-size: 24px; }
@@ -44,18 +40,26 @@
   .gate-error { font-size: 13px; color: #C0392B; margin-top: 10px; display: none; }
   .gate-tagline { font-size: 11px; color: var(--ink-faint); margin-top: 1.5rem; }
 
-  /* APP */
   #app { display: none; }
   .topbar { background: var(--green); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 56px; position: sticky; top: 0; z-index: 10; }
-  .topbar-title { font-size: 15px; font-weight: 600; color: var(--pure-white); letter-spacing: -0.01em; }
-  .nav { display: flex; gap: 4px; }
-  .nav-btn { padding: 6px 14px; font-size: 14px; font-weight: 500; border: none; border-radius: 8px; background: none; color: rgba(255,255,255,0.6); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
-  .nav-btn:hover { background: rgba(255,255,255,0.12); color: var(--pure-white); }
-  .nav-btn.active { background: rgba(255,255,255,0.18); color: var(--pure-white); }
+  .topbar-title { font-size: 15px; font-weight: 600; color: var(--pure-white); letter-spacing: -0.01em; cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; }
+  .topbar-title:hover { opacity: 0.85; }
+  .hiw-btn { padding: 6px 14px; font-size: 13px; font-weight: 500; border: 1px solid rgba(255,255,255,0.35); border-radius: 8px; background: none; color: rgba(255,255,255,0.85); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; white-space: nowrap; }
+  .hiw-btn:hover { background: rgba(255,255,255,0.12); color: var(--pure-white); }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(26,24,20,0.6); z-index: 100; align-items: flex-start; justify-content: center; padding: 2rem 1rem; overflow-y: auto; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--white); border-radius: 18px; max-width: 560px; width: 100%; padding: 2rem 2rem 2.5rem; margin: auto; }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .modal-title { font-size: 18px; font-weight: 600; color: var(--ink); }
+  .modal-close { background: none; border: none; font-size: 22px; color: var(--ink-faint); cursor: pointer; line-height: 1; padding: 2px 6px; border-radius: 6px; }
+  .modal-close:hover { background: var(--page-bg); color: var(--ink); }
+  .modal-body p { font-size: 15px; color: var(--ink-soft); line-height: 1.7; margin-bottom: 1rem; }
+  .modal-body p:last-child { margin-bottom: 0; }
+  .modal-body a { color: var(--green); font-weight: 500; cursor: pointer; text-decoration: underline; }
 
   .container { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.5rem 2rem; }
 
-  /* STATS */
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.75rem; }
   .stat { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; }
   .stat-val { font-size: 30px; font-weight: 600; color: var(--ink); line-height: 1; }
@@ -64,7 +68,6 @@
   .section { display: none; }
   .section.active { display: block; }
 
-  /* TOOLBAR */
   .toolbar { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; flex-wrap: wrap; }
   .search { flex: 1; min-width: 180px; font-size: 15px; padding: 9px 14px; border: 0.5px solid var(--border-strong); border-radius: 8px; background: var(--card-bg); color: var(--ink); font-family: 'DM Sans', sans-serif; outline: none; transition: border-color 0.15s; }
   .search:focus { border-color: var(--green); }
@@ -73,7 +76,6 @@
   .filter-btn:hover { border-color: var(--green); color: var(--green); }
   .filter-btn.active { background: var(--green); color: var(--pure-white); border-color: var(--green); }
 
-  /* ISSUE CARD */
   .issue-card { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 8px; transition: box-shadow 0.15s; }
   .issue-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
   .issue-card.is-new { border: 1.5px solid var(--terra); }
@@ -83,9 +85,6 @@
   .badge-open { background: var(--open-bg); color: var(--open-fg); }
   .badge-inprogress { background: var(--progress-bg); color: var(--progress-fg); }
   .badge-resolved { background: var(--resolved-bg); color: var(--resolved-fg); }
-  .badge-pending { background: var(--pending-bg); color: var(--pending-fg); }
-  .badge-submitted { background: var(--submitted-bg); color: var(--submitted-fg); }
-  .badge-agenda { background: var(--agenda-bg); color: var(--agenda-fg); }
   .issue-info { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; line-height: 1.55; }
   .issue-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 0.5px solid var(--border); }
   .upvote-count { font-size: 13px; color: var(--ink-faint); }
@@ -94,7 +93,6 @@
   .upvote-btn.voted { background: var(--terra); border-color: var(--terra); color: var(--pure-white); }
   .upvote-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* FORM */
   .form-card { background: var(--card-bg); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.25rem; }
   .form-card h2 { font-size: 17px; font-weight: 600; margin-bottom: 5px; }
   .form-card > p { font-size: 14px; color: var(--ink-soft); margin-bottom: 1.25rem; line-height: 1.6; }
@@ -112,14 +110,6 @@
   .form-submit:disabled { opacity: 0.4; cursor: not-allowed; }
   .success-msg { font-size: 14px; color: var(--resolved-fg); margin-top: 10px; display: none; font-weight: 500; }
 
-  /* MOTION */
-  .motion-card { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 8px; }
-  .motion-title { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
-  .motion-why { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
-
-  .notice { background: rgba(255,248,220,0.9); border: 0.5px solid #E8C840; border-radius: 10px; padding: 13px 15px; font-size: 14px; color: #7A5500; margin-bottom: 1.25rem; line-height: 1.6; }
-
-  /* FEEDBACK */
   .feedback-link { background: none; border: none; color: var(--green); font-size: 12px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; text-decoration: underline; padding: 0; }
   .feedback-link:hover { opacity: 0.7; }
   .feedback-form-inline { background: var(--card-bg); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.5rem; margin-top: 0.5rem; }
@@ -131,7 +121,6 @@
   .feedback-cancel:hover { color: var(--ink-soft); }
   .feedback-success { font-size: 13px; color: var(--resolved-fg); margin-top: 8px; display: none; font-weight: 500; }
 
-  /* FAB */
   .fab { display: block; width: 100%; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 16px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.3), 0 2px 8px rgba(45,74,45,0.25); margin-top: 1rem; transition: all 0.15s; text-align: center; }
   .fab:hover { background: var(--green-light); transform: translateY(-1px); }
 
@@ -145,7 +134,8 @@
     .stat { padding: 0.9rem 1rem; }
     .stat-val { font-size: 24px; }
     .container { padding: 1.25rem 1rem 2rem; }
-
+    .modal-overlay { padding: 1rem; }
+    .modal { padding: 1.5rem; }
   }
 </style>
 </head>
@@ -154,8 +144,8 @@
 <div id="gate">
   <div class="gate-card">
     <div class="gate-logo">🏢</div>
-    <h1>Wicks Place - Resident Backlog</h1>
-    <p class="gate-sub">Issues, priorities and AGM items for owners and residents. Enter the access code to continue.</p>
+    <h1>Wicks Place Resident Backlog</h1>
+    <p class="gate-sub">Issues, priorities and updates for owners and residents. Enter the access code to continue.</p>
     <input class="gate-input" type="text" id="gate-input" placeholder="Access code" autocomplete="off">
     <button class="gate-btn" onclick="checkCode()">Enter</button>
     <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
@@ -165,11 +155,23 @@
 
 <div id="app">
   <div class="topbar">
-    <div class="topbar-title">Wicks Place — Resident Backlog</div>
-    <nav class="nav">
-      <button class="nav-btn active" onclick="showSection('backlog',this)">Backlog</button>
-      <button class="nav-btn" onclick="showSection('agm',this)">AGM items</button>
-    </nav>
+    <button class="topbar-title" onclick="showBacklog()">Wicks Place Resident Backlog</button>
+    <button class="hiw-btn" onclick="openModal()">How it works</button>
+  </div>
+
+  <div class="modal-overlay" id="modal" onclick="handleOverlayClick(event)">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">How this works</span>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>This is a resident-maintained issue register for Wicks Place. One central place where owners and residents can log issues, see what others have raised, and understand how widely a problem is felt.</p>
+        <p>It exists because building management works better with clear, direct feedback from the people who live here. This backlog gives our building manager and strata committee a prioritised, living list of what matters to residents, and it's updated in real time.</p>
+        <p>When you upvote an issue, you're adding weight to it. The more upvotes an issue has, the easier it is to see its level of importance, and have action prioritised for it accordingly.</p>
+        <p>If you have any thoughts or suggestions about the backlog, please <a onclick="closeModal();toggleFeedback()">share your feedback</a>.</p>
+      </div>
+    </div>
   </div>
 
   <div class="container">
@@ -200,14 +202,8 @@
           <div class="feedback-success" id="feedback-success">✓ Thanks — we'll take a look.</div>
         </div>
       </div>
-      <button class="fab" onclick="showSection('submit',null)" id="fab">Submit issue</button>
-      <p class="tagline" id="feedback-tagline">Powered by residents · <button class="feedback-link" onclick="toggleFeedback()">Give feedback</button></p>
-    </div>
-
-    <div id="section-agm" class="section">
-      <div class="notice">⚠️ AGM expected July 2025. This is a list of things residents want raised — not the official agenda. The earlier we have these documented the better.</div>
-      <div id="motion-list"><div class="loading">Loading…</div></div>
-      <p class="tagline">Powered by residents, for residents</p>
+      <button class="fab" onclick="showSection('submit',null)">Submit issue</button>
+      <p class="tagline">Powered by residents · <button class="feedback-link" onclick="toggleFeedback()">Give feedback</button></p>
     </div>
 
     <div id="section-submit" class="section">
@@ -227,19 +223,16 @@
       <p class="tagline">Powered by residents, for residents</p>
     </div>
   </div>
-
-
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz4Mc1Q4PWd31KZyOfS4SsGQThW4SPTB5Tq6HIDNSC1yK8V5d4gE-2ttJzMGPO_tOY/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxQywZvYmnRO2Ivpu-m2UHymNJuly7YUgD8cjrFzaAD5rXGhWK-b8pf5ghkGruMaA4/exec';
 const ACCESS_CODE = 'innerwestisbest';
 const SESSION_KEY = 'wp_auth';
 
-let backlog = [], motions = [], activeFilter = 'All';
+let backlog = [], activeFilter = 'All';
 const userVotes = {};
 
-// Check session on load
 window.addEventListener('load', () => {
   if (sessionStorage.getItem(SESSION_KEY) === '1') {
     document.getElementById('gate').style.display = 'none';
@@ -266,14 +259,9 @@ function checkCode() {
 
 async function loadData() {
   try {
-    const [bl, mt] = await Promise.all([
-      fetch(SCRIPT_URL + '?action=getBacklog').then(r => r.json()),
-      fetch(SCRIPT_URL + '?action=getMotions').then(r => r.json())
-    ]);
+    const bl = await fetch(SCRIPT_URL + '?action=getBacklog', {redirect:'follow'}).then(r => r.json());
     backlog = bl.filter(r => r.ID);
-    motions = mt.filter(r => r.ID);
-    renderBacklog(); renderSimilarList(); renderMotions(); updateStats();
-    document.getElementById('feedback-tagline').style.display = 'block';
+    renderBacklog(); renderSimilarList(); updateStats();
   } catch(e) {
     document.getElementById('backlog-list').innerHTML = '<div class="empty">Could not load data. Please try refreshing.</div>';
     console.error(e);
@@ -327,9 +315,7 @@ async function vote(id) {
   if(userVotes[id]) { delete userVotes[id]; item.Upvotes=(Number(item.Upvotes)||0)-1; }
   else { userVotes[id]=true; item.Upvotes=(Number(item.Upvotes)||0)+1; }
   renderBacklog(); renderSimilarList(); updateStats();
-  try {
-    await fetch(`${SCRIPT_URL}?action=upvote&id=${id}&delta=${delta}`);
-  } catch(e) { console.log('Upvote write error', e); }
+  try { await fetch(`${SCRIPT_URL}?action=upvote&id=${id}&delta=${delta}`, {redirect:"follow"}); } catch(e) {}
 }
 
 function setFilter(f,btn) {
@@ -355,22 +341,9 @@ async function submitIssue() {
   const btn = document.getElementById('submit-btn');
   btn.disabled=true; btn.textContent='Submitting…';
   try {
-    const params = new URLSearchParams({
-      action: 'submit',
-      title,
-      supportingInfo: document.getElementById('new-info').value.trim(),
-
-    });
-    await fetch(`${SCRIPT_URL}?${params}`);
-    const newItem = {
-      ID: Date.now(),
-      Title: title,
-      'Supporting info': document.getElementById('new-info').value.trim(),
-      Status: 'Open',
-      Upvotes: 0,
-      'Feedback count': 1
-    };
-    newItem._new = true;
+    const params = new URLSearchParams({ action:'submit', title, supportingInfo: document.getElementById('new-info').value.trim() });
+    await fetch(`${SCRIPT_URL}?${params}`, {redirect:"follow"});
+    const newItem = { ID: Date.now(), Title: title, 'Supporting info': document.getElementById('new-info').value.trim(), Status:'Open', Upvotes:0, 'Feedback count':1, _new:true };
     backlog.unshift(newItem);
     document.getElementById('new-title').value='';
     document.getElementById('new-info').value='';
@@ -378,8 +351,7 @@ async function submitIssue() {
     updateStats();
     setTimeout(()=>{
       document.getElementById('submit-success').style.display='none';
-      const navBtn = document.querySelectorAll('.nav-btn')[0];
-      showSection('backlog', navBtn);
+      showBacklog();
       renderBacklog();
     },1500);
   } catch(e) { alert('Something went wrong. Please try again.'); }
@@ -390,37 +362,18 @@ function toggleFeedback() {
   const form = document.getElementById('feedback-inline');
   const visible = form.style.display === 'block';
   form.style.display = visible ? 'none' : 'block';
-  if (!visible) document.getElementById('feedback-text').focus();
+  if(!visible) document.getElementById('feedback-text').focus();
 }
 
 async function submitFeedback() {
   const text = document.getElementById('feedback-text').value.trim();
   if(!text) { alert('Please write something first.'); return; }
   try {
-    await fetch(`${SCRIPT_URL}?action=feedback&feedback=${encodeURIComponent(text)}`);
+    await fetch(`${SCRIPT_URL}?action=feedback&feedback=${encodeURIComponent(text)}`, {redirect:"follow"});
     document.getElementById('feedback-text').value='';
     document.getElementById('feedback-success').style.display='block';
     setTimeout(()=>{ document.getElementById('feedback-success').style.display='none'; document.getElementById('feedback-inline').style.display='none'; },3000);
   } catch(e) { alert('Something went wrong. Please try again.'); }
-}
-
-function motionBadge(s) {
-  if(!s) return '';
-  const map={'Pending':'badge-pending','Submitted':'badge-submitted','On the agenda':'badge-agenda'};
-  return `<span class="badge ${map[s]||'badge-pending'}">${s}</span>`;
-}
-
-function renderMotions() {
-  const list = document.getElementById('motion-list');
-  if(!motions.length) { list.innerHTML='<div class="empty">No AGM items yet.</div>'; return; }
-  list.innerHTML = motions.map(m=>`
-    <div class="motion-card">
-      <div class="issue-top">
-        <div class="motion-title">${m['What we want']}</div>
-        ${motionBadge(m.Status)}
-      </div>
-      ${m['Why it matters']?`<div class="motion-why">${m['Why it matters']}</div>`:''}
-    </div>`).join('');
 }
 
 function updateStats() {
@@ -429,13 +382,21 @@ function updateStats() {
   document.getElementById('stat-resolved').textContent = backlog.filter(i=>i.Status==='Resolved').length;
 }
 
-function showSection(name,btn) {
+function showBacklog() {
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('section-backlog').classList.add('active');
+}
+
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('section-'+name).classList.add('active');
-  if(btn) btn.classList.add('active');
   if(name==='submit') renderSimilarList();
 }
+
+function openModal() { document.getElementById('modal').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeModal() { document.getElementById('modal').classList.remove('open'); document.body.style.overflow=''; }
+function handleOverlayClick(e) { if(e.target===document.getElementById('modal')) closeModal(); }
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
 </script>
 </body>
 </html>
