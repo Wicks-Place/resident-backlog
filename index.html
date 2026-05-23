@@ -220,7 +220,7 @@
     <div id="section-backlog" class="section active">
       <div class="title-block">
         <h1>What needs fixing?</h1>
-        <p>Raise issues, upvote the ones that matter to you.</p>
+        <p>Raise issues, upvote the ones that matter to you. The top of the list is what management works on next.</p>
       </div>
       <div class="toolbar">
         <div class="search-wrap">
@@ -233,24 +233,15 @@
         <div class="filter-row" id="filter-row"></div>
       </div>
       <div id="backlog-list"><div class="loading">Loading issues…</div></div>
-      <div id="feedback-inline" style="display:none">
-        <div class="form-card" style="margin-top:8px;">
-          <textarea class="form-textarea" id="feedback-textarea" placeholder="Tell us what's missing, wrong, or could be better…" style="margin-bottom:10px;"></textarea>
-          <div class="form-actions">
-            <button class="btn-cancel" onclick="toggleFeedback()">Cancel</button>
-            <button class="btn-primary" id="feedback-btn" onclick="submitFeedback()">Send feedback</button>
-          </div>
-          <div class="success-msg" id="feedback-success">✓ Thanks — we'll take a look.</div>
-        </div>
-      </div>
-      <p class="tagline">Powered by residents · <button class="tagline-link" onclick="toggleFeedback()">Give feedback</button></p>
+
+      <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
     </div>
 
     <!-- SUBMIT -->
     <div id="section-submit" class="section">
       <div class="form-card">
         <h2>Raise an issue</h2>
-        <p>We'll handle duplicate and similar issues, merging or removing them to keep things clean.</p>
+        <p class="info-strip">We'll take care of duplicates, or merge similar issues.</p>
         <label class="form-label">Title *</label>
         <input class="form-input" type="text" id="new-title" placeholder="What's the problem?">
         <label class="form-label">A bit more detail *</label>
@@ -258,11 +249,11 @@
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div>
             <label class="form-label">Your name (optional)</label>
-            <input class="form-input" type="text" id="new-name" placeholder="e.g. Alex" style="margin-bottom:0;">
+            <input class="form-input" type="text" id="new-name" placeholder="e.g. Sarah" style="margin-bottom:0;">
           </div>
           <div>
             <label class="form-label">Unit number (optional)</label>
-            <input class="form-input" type="text" id="new-unit" placeholder="e.g. 100A" style="margin-bottom:0;">
+            <input class="form-input" type="text" id="new-unit" placeholder="e.g. 14B" style="margin-bottom:0;">
           </div>
         </div>
         <div style="height:13px;"></div>
@@ -511,26 +502,7 @@ async function submitIssue() {
   btn.textContent='Post issue'; btn.disabled=false;
 }
 
-function toggleFeedback() {
-  const form = document.getElementById('feedback-inline');
-  const visible = form.style.display==='block';
-  form.style.display = visible?'none':'block';
-  if(!visible) document.getElementById('feedback-textarea').focus();
-}
 
-async function submitFeedback() {
-  const text = document.getElementById('feedback-textarea').value.trim();
-  if(!text) { alert('Please write something first.'); return; }
-  const btn = document.getElementById('feedback-btn');
-  btn.disabled=true; btn.textContent='Sending…';
-  try {
-    await fetch(SCRIPT_URL+'?action=feedback&feedback='+encodeURIComponent(text),{redirect:'follow',mode:'no-cors'});
-    document.getElementById('feedback-textarea').value='';
-    document.getElementById('feedback-success').style.display='block';
-    setTimeout(()=>{ document.getElementById('feedback-success').style.display='none'; document.getElementById('feedback-inline').style.display='none'; },3000);
-  } catch(e) { alert('Something went wrong. Please try again.'); }
-  btn.textContent='Send feedback'; btn.disabled=false;
-}
 
 async function submitFeedbackSection() {
   const text = document.getElementById('feedback-textarea').value.trim();
