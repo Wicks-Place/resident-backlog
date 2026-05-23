@@ -111,6 +111,9 @@
   .success-msg { font-size: 14px; color: var(--resolved-fg); margin-top: 10px; display: none; font-weight: 500; }
 
   .feedback-link { background: none; border: none; color: var(--green); font-size: 12px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; text-decoration: underline; padding: 0; }
+  .info-strip { display: flex; gap: 8px; align-items: flex-start; background: rgba(45,74,45,0.07); border: 0.5px solid rgba(45,74,45,0.15); border-radius: 8px; padding: 10px 12px; margin-bottom: 1rem; }
+  .info-strip span { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+  .info-strip i { color: #2D4A2D; flex-shrink: 0; margin-top: 1px; font-size: 15px; }
   .feedback-link:hover { opacity: 0.7; }
   .feedback-form-inline { background: var(--card-bg); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.5rem; margin-top: 0.5rem; }
   .feedback-textarea-inline { width: 100%; font-size: 14px; padding: 9px 12px; border: 0.5px solid var(--border-strong); border-radius: 8px; background: var(--page-bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 80px; resize: vertical; outline: none; margin-bottom: 10px; transition: border-color 0.15s; }
@@ -212,7 +215,10 @@
         <p>Check below first. Upvoting an existing issue carries more weight than a duplicate submission.</p>
         <div id="similar-list"></div>
         <div class="divider"></div>
-        <p style="font-size:14px;color:var(--ink-soft);margin-bottom:1.25rem;">Don't see it? Add it here.</p>
+        <div class="info-strip">
+          <i class="ti ti-info-circle" aria-hidden="true"></i>
+          <span>Don't see it? Add it below. We'll take care of duplicates.</span>
+        </div>
         <label class="form-label">Issue title *</label>
         <input class="form-input" type="text" id="new-title" placeholder="e.g. Rooftop garden locked without notice">
         <label class="form-label">Supporting info *</label>
@@ -289,7 +295,6 @@ function renderBacklog() {
   if(!filtered.length) { list.innerHTML='<div class="empty">No issues match this filter.</div>'; return; }
   list.innerHTML = filtered.map(item => {
     const votes = Number(item.Upvotes)||0;
-    const feedback = Number(item['Feedback count'])||0;
     const voted = userVotes[item.ID];
     return `<div class="issue-card${item._new?' is-new':''}">
       <div class="issue-top">
@@ -298,7 +303,7 @@ function renderBacklog() {
       </div>
       ${item['Supporting info']?`<div class="issue-info">${item['Supporting info']}</div>`:''}
       <div class="issue-footer">
-        <span class="upvote-count">${feedback>0?`${feedback} ${feedback===1?'resident':'residents'} reported this`:''}</span>
+        <span class="upvote-count"></span>
         <div style="display:flex;align-items:center;gap:6px;">
           <span class="upvote-count" style="font-weight:500;color:var(--terra);">${votes}</span>
           <button class="upvote-btn ${voted?'voted':''}" onclick="vote(${item.ID})" id="vote-btn-${item.ID}">↑ ${voted?'Upvoted':'Upvote'}</button>
@@ -347,7 +352,7 @@ async function submitIssue() {
   try {
     const params = new URLSearchParams({ action:'submit', title, supportingInfo: info });
     await fetch(`${SCRIPT_URL}?${params}`, {redirect:"follow"});
-    const newItem = { ID: Date.now(), Title: title, 'Supporting info': info, Status:'Open', Upvotes:0, 'Feedback count':1, _new:true };
+    const newItem = { ID: Date.now(), Title: title, 'Supporting info': info, Status:'Open', Upvotes:0, _new:true };
     backlog.unshift(newItem);
     document.getElementById('new-title').value='';
     document.getElementById('new-info').value='';
