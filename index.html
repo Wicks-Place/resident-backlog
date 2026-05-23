@@ -88,7 +88,7 @@
   .issue-info { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; line-height: 1.55; }
   .issue-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 0.5px solid var(--border); }
   .upvote-count { font-size: 13px; color: var(--ink-faint); }
-  .upvote-btn { display: flex; align-items: center; gap: 5px; font-size: 14px; font-weight: 500; padding: 6px 16px; border: 0.5px solid var(--border-strong); border-radius: 8px; background: none; color: var(--ink-soft); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .upvote-btn { display: flex; align-items: center; gap: 5px; font-size: 14px; font-weight: 500; padding: 6px 16px; border: 0.5px solid var(--terra); border-radius: 8px; background: var(--terra-light); color: var(--terra); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
   .upvote-btn:hover { background: var(--terra); border-color: var(--terra); color: var(--pure-white); }
   .upvote-btn.voted { background: var(--terra); border-color: var(--terra); color: var(--pure-white); }
   .upvote-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -119,20 +119,16 @@
   .notice { background: rgba(255,248,220,0.9); border: 0.5px solid #E8C840; border-radius: 10px; padding: 13px 15px; font-size: 14px; color: #7A5500; margin-bottom: 1.25rem; line-height: 1.6; }
 
   /* FEEDBACK */
-  .feedback-prompt { background: var(--green); border-radius: 12px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
-  .feedback-prompt-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-  .feedback-prompt strong { color: var(--pure-white); display: block; font-size: 15px; margin-bottom: 3px; }
-  .feedback-prompt p { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.5; flex: 1; }
-  .feedback-toggle-btn { padding: 8px 18px; background: rgba(255,255,255,0.15); border: none; border-radius: 8px; color: var(--pure-white); font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
-  .feedback-toggle-btn:hover { background: rgba(255,255,255,0.25); }
-  .feedback-form-wrap { display: none; margin-top: 1rem; }
-  .feedback-form-wrap.open { display: block; }
-  .feedback-textarea { width: 100%; font-size: 14px; padding: 10px 13px; border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; background: rgba(255,255,255,0.1); color: var(--pure-white); font-family: 'DM Sans', sans-serif; min-height: 80px; resize: vertical; outline: none; margin-bottom: 10px; }
-  .feedback-textarea::placeholder { color: rgba(255,255,255,0.38); }
-  .feedback-textarea:focus { border-color: rgba(255,255,255,0.55); }
-  .feedback-submit { padding: 9px 20px; background: var(--pure-white); color: var(--green); border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; }
-  .feedback-submit:hover { opacity: 0.88; }
-  .feedback-success { font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 8px; display: none; }
+  .feedback-link { background: none; border: none; color: var(--green); font-size: 12px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; text-decoration: underline; padding: 0; }
+  .feedback-link:hover { opacity: 0.7; }
+  .feedback-form-inline { background: var(--card-bg); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.5rem; margin-top: 0.5rem; }
+  .feedback-textarea-inline { width: 100%; font-size: 14px; padding: 9px 12px; border: 0.5px solid var(--border-strong); border-radius: 8px; background: var(--page-bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 80px; resize: vertical; outline: none; margin-bottom: 10px; transition: border-color 0.15s; }
+  .feedback-textarea-inline:focus { border-color: var(--green); background: var(--pure-white); }
+  .feedback-submit-inline { padding: 8px 18px; background: var(--green); color: var(--pure-white); border: none; border-radius: 8px; font-size: 14px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s; }
+  .feedback-submit-inline:hover { background: var(--green-light); }
+  .feedback-cancel { background: none; border: none; font-size: 13px; color: var(--ink-faint); font-family: 'DM Sans', sans-serif; cursor: pointer; }
+  .feedback-cancel:hover { color: var(--ink-soft); }
+  .feedback-success { font-size: 13px; color: var(--resolved-fg); margin-top: 8px; display: none; font-weight: 500; }
 
   /* FAB */
   .fab { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 14px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.35), 0 2px 8px rgba(45,74,45,0.3); display: flex; align-items: center; z-index: 100; transition: all 0.15s; }
@@ -149,7 +145,6 @@
     .stat-val { font-size: 24px; }
     .container { padding: 1.25rem 1rem 7rem; }
     .fab { bottom: 1rem; right: 1rem; padding: 12px 20px; font-size: 15px; border-radius: 12px; }
-    .feedback-prompt-row { flex-direction: column; align-items: flex-start; }
   }
 </style>
 </head>
@@ -160,7 +155,7 @@
     <div class="gate-logo">🏢</div>
     <h1>Wicks Place - Resident Backlog</h1>
     <p class="gate-sub">Issues, priorities and AGM items for owners and residents. Enter the access code to continue.</p>
-    <input class="gate-input" type="password" id="gate-input" placeholder="Access code" autocomplete="off">
+    <input class="gate-input" type="text" id="gate-input" placeholder="Access code" autocomplete="off">
     <button class="gate-btn" onclick="checkCode()">Enter</button>
     <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
     <p class="gate-tagline">Powered by residents, for residents</p>
@@ -194,21 +189,17 @@
         </div>
       </div>
       <div id="backlog-list"><div class="loading">Loading issues…</div></div>
-      <div class="feedback-prompt" id="feedback-prompt" style="display:none">
-        <div class="feedback-prompt-row">
-          <div>
-            <strong>How's this backlog looking?</strong>
-            <p>Is it missing something? Have an idea? Let us know.</p>
+      <div id="feedback-inline" style="display:none">
+        <div class="feedback-form-inline">
+          <textarea class="feedback-textarea-inline" id="feedback-text" placeholder="Tell us what's missing, wrong, or could be better…"></textarea>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <button class="feedback-submit-inline" onclick="submitFeedback()">Send feedback</button>
+            <button class="feedback-cancel" onclick="toggleFeedback()">Cancel</button>
           </div>
-          <button class="feedback-toggle-btn" onclick="toggleFeedback()">Give feedback</button>
-        </div>
-        <div class="feedback-form-wrap" id="feedback-form">
-          <textarea class="feedback-textarea" id="feedback-text" placeholder="Tell us what's missing, wrong, or could be better…"></textarea>
-          <button class="feedback-submit" onclick="submitFeedback()">Send feedback</button>
           <div class="feedback-success" id="feedback-success">✓ Thanks — we'll take a look.</div>
         </div>
       </div>
-      <p class="tagline">Powered by residents, for residents</p>
+      <p class="tagline" id="feedback-tagline">Powered by residents · <button class="feedback-link" onclick="toggleFeedback()">Give feedback</button></p>
     </div>
 
     <div id="section-agm" class="section">
@@ -280,7 +271,7 @@ async function loadData() {
     backlog = bl.filter(r => r.ID);
     motions = mt.filter(r => r.ID);
     renderBacklog(); renderSimilarList(); renderMotions(); updateStats();
-    document.getElementById('feedback-prompt').style.display = 'block';
+    document.getElementById('feedback-tagline').style.display = 'block';
   } catch(e) {
     document.getElementById('backlog-list').innerHTML = '<div class="empty">Could not load data. Please try refreshing.</div>';
     console.error(e);
@@ -312,8 +303,8 @@ function renderBacklog() {
       ${item['Supporting info']?`<div class="issue-info">${item['Supporting info']}</div>`:''}
       <div class="issue-footer">
         <span class="upvote-count">${feedback>0?`${feedback} ${feedback===1?'resident':'residents'} reported this`:''}</span>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span class="upvote-count">${votes} ${votes===1?'upvote':'upvotes'}</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="upvote-count" style="font-weight:500;color:var(--terra);">${votes}</span>
           <button class="upvote-btn ${voted?'voted':''}" onclick="vote(${item.ID})" id="vote-btn-${item.ID}">↑ ${voted?'Upvoted':'Upvote'}</button>
         </div>
       </div>
@@ -384,9 +375,10 @@ async function submitIssue() {
 }
 
 function toggleFeedback() {
-  const form = document.getElementById('feedback-form');
-  form.classList.toggle('open');
-  document.querySelector('.feedback-toggle-btn').textContent = form.classList.contains('open') ? 'Never mind' : 'Give feedback';
+  const form = document.getElementById('feedback-inline');
+  const visible = form.style.display === 'block';
+  form.style.display = visible ? 'none' : 'block';
+  if (!visible) document.getElementById('feedback-text').focus();
 }
 
 async function submitFeedback() {
@@ -396,9 +388,7 @@ async function submitFeedback() {
     await fetch(`${SCRIPT_URL}?action=feedback&feedback=${encodeURIComponent(text)}`);
     document.getElementById('feedback-text').value='';
     document.getElementById('feedback-success').style.display='block';
-    document.querySelector('.feedback-toggle-btn').textContent='Give feedback';
-    document.getElementById('feedback-form').classList.remove('open');
-    setTimeout(()=>document.getElementById('feedback-success').style.display='none',4000);
+    setTimeout(()=>{ document.getElementById('feedback-success').style.display='none'; document.getElementById('feedback-inline').style.display='none'; },3000);
   } catch(e) { alert('Something went wrong. Please try again.'); }
 }
 
