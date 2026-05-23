@@ -178,7 +178,7 @@
     <input class="gate-input" type="text" id="gate-input" placeholder="Access code" autocomplete="off">
     <button class="gate-btn" onclick="checkCode()">Enter</button>
     <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
-    <p class="gate-tagline">Powered by residents, for residents</p>
+    <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
   </div>
 </div>
 
@@ -263,7 +263,7 @@
         </div>
         <div class="success-msg" id="submit-success">✓ Submitted — thanks for flagging this.</div>
       </div>
-      <p class="tagline">Powered by residents, for residents</p>
+      <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
     </div>
 
     <!-- FEEDBACK -->
@@ -279,7 +279,7 @@
         </div>
         <div class="success-msg" id="feedback-section-success">✓ Thanks — we'll take a look.</div>
       </div>
-      <p class="tagline">Powered by residents, for residents</p>
+      <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
     </div>
 
   </div>
