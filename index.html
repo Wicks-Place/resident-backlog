@@ -169,7 +169,7 @@
         <p>This is a resident-maintained issue register for Wicks Place. One central place where owners and residents can log issues, see what others have raised, and understand how widely a problem is felt.</p>
         <p>It exists because building management works better with clear, direct feedback from the people who live here. This backlog gives our building manager and strata committee a prioritised, living list of what matters to residents, and it's updated in real time.</p>
         <p>When you upvote an issue, you're adding weight to it. The more upvotes an issue has, the easier it is to see its level of importance, and have action prioritised for it accordingly.</p>
-        <p>If you have any thoughts or suggestions about the backlog, please <a onclick="closeModal();toggleFeedback()">share your feedback</a>.</p>
+        <p>If you have any thoughts or suggestions about the backlog, please <a onclick="closeModal();showBacklog();setTimeout(toggleFeedback,50)">share your feedback</a>.</p>
       </div>
     </div>
   </div>
@@ -215,12 +215,14 @@
         <p style="font-size:14px;color:var(--ink-soft);margin-bottom:1.25rem;">Don't see it? Add it here.</p>
         <label class="form-label">Issue title *</label>
         <input class="form-input" type="text" id="new-title" placeholder="e.g. Rooftop garden locked without notice">
-        <label class="form-label">Supporting info</label>
+        <label class="form-label">Supporting info *</label>
         <textarea class="form-textarea" id="new-info" placeholder="How long it's been happening, which floors or units are affected, any relevant context…"></textarea>
-        <button class="form-submit" id="submit-btn" onclick="submitIssue()">Submit issue</button>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="form-submit" id="submit-btn" onclick="submitIssue()">Submit issue</button>
+          <button class="feedback-cancel" onclick="showBacklog()">Cancel</button>
+        </div>
         <div class="success-msg" id="submit-success">✓ Submitted — thanks for flagging this.</div>
       </div>
-      <p class="tagline">Powered by residents, for residents</p>
     </div>
   </div>
 </div>
@@ -337,13 +339,15 @@ function renderSimilarList() {
 
 async function submitIssue() {
   const title = document.getElementById('new-title').value.trim();
+  const info = document.getElementById('new-info').value.trim();
   if(!title) { alert('Please enter an issue title.'); return; }
+  if(!info) { alert('Please add some supporting info.'); return; }
   const btn = document.getElementById('submit-btn');
   btn.disabled=true; btn.textContent='Submitting…';
   try {
-    const params = new URLSearchParams({ action:'submit', title, supportingInfo: document.getElementById('new-info').value.trim() });
+    const params = new URLSearchParams({ action:'submit', title, supportingInfo: info });
     await fetch(`${SCRIPT_URL}?${params}`, {redirect:"follow"});
-    const newItem = { ID: Date.now(), Title: title, 'Supporting info': document.getElementById('new-info').value.trim(), Status:'Open', Upvotes:0, 'Feedback count':1, _new:true };
+    const newItem = { ID: Date.now(), Title: title, 'Supporting info': info, Status:'Open', Upvotes:0, 'Feedback count':1, _new:true };
     backlog.unshift(newItem);
     document.getElementById('new-title').value='';
     document.getElementById('new-info').value='';
