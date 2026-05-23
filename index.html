@@ -243,17 +243,17 @@
         <h2>Raise an issue</h2>
         <p class="info-strip">We'll take care of duplicates, or merge similar issues.</p>
         <label class="form-label">Title *</label>
-        <input class="form-input" type="text" id="new-title" placeholder="What's the problem?">
+        <input class="form-input" type="text" id="new-title" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="What's the problem?">
         <label class="form-label">A bit more detail *</label>
-        <textarea class="form-textarea" id="new-info" placeholder="What's happening, where, and any extra context."></textarea>
+        <textarea class="form-textarea" id="new-info" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="What's happening, where, and any extra context."></textarea>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div>
             <label class="form-label">Your name (optional)</label>
-            <input class="form-input" type="text" id="new-name" placeholder="e.g. Sarah" style="margin-bottom:0;">
+            <input class="form-input" type="text" id="new-name" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="e.g. Sarah" style="margin-bottom:0;">
           </div>
           <div>
             <label class="form-label">Unit number (optional)</label>
-            <input class="form-input" type="text" id="new-unit" placeholder="e.g. 14B" style="margin-bottom:0;">
+            <input class="form-input" type="text" id="new-unit" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="e.g. 14B" style="margin-bottom:0;">
           </div>
         </div>
         <div style="height:13px;"></div>
@@ -272,7 +272,7 @@
         <h2>Give feedback</h2>
         <p>Something missing from the backlog? Wrong priority? Let us know — your feedback helps keep this accurate.</p>
         <label class="form-label">Your feedback *</label>
-        <textarea class="form-textarea" id="feedback-textarea" placeholder="Tell us what's missing, wrong, or could be better…" style="margin-bottom:10px;"></textarea>
+        <textarea class="form-textarea" id="feedback-textarea" autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other" placeholder="Tell us what's missing, wrong, or could be better…" style="margin-bottom:10px;"></textarea>
         <div class="form-actions">
           <button class="btn-cancel" onclick="showBacklog()">Cancel</button>
           <button class="btn-primary" id="feedback-section-btn" onclick="submitFeedbackSection()">Send feedback</button>
