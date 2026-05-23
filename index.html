@@ -53,7 +53,7 @@
   .nav-btn:hover { background: rgba(255,255,255,0.12); color: var(--pure-white); }
   .nav-btn.active { background: rgba(255,255,255,0.18); color: var(--pure-white); }
 
-  .container { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.5rem 7rem; }
+  .container { max-width: 720px; margin: 0 auto; padding: 1.75rem 1.5rem 2rem; }
 
   /* STATS */
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.75rem; }
@@ -76,6 +76,7 @@
   /* ISSUE CARD */
   .issue-card { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 8px; transition: box-shadow 0.15s; }
   .issue-card:hover { box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+  .issue-card.is-new { border: 1.5px solid var(--terra); }
   .issue-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
   .issue-title { font-size: 15px; font-weight: 500; color: var(--ink); flex: 1; line-height: 1.4; }
   .badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; }
@@ -131,8 +132,8 @@
   .feedback-success { font-size: 13px; color: var(--resolved-fg); margin-top: 8px; display: none; font-weight: 500; }
 
   /* FAB */
-  .fab { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 14px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.35), 0 2px 8px rgba(45,74,45,0.3); display: flex; align-items: center; z-index: 100; transition: all 0.15s; }
-  .fab:hover { background: var(--green-light); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(180,220,80,0.45), 0 2px 10px rgba(45,74,45,0.35); }
+  .fab { display: block; width: 100%; background: var(--green); color: var(--pure-white); border: none; border-radius: 14px; padding: 16px 26px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 20px rgba(180,220,80,0.3), 0 2px 8px rgba(45,74,45,0.25); margin-top: 1rem; transition: all 0.15s; text-align: center; }
+  .fab:hover { background: var(--green-light); transform: translateY(-1px); }
 
   .tagline { text-align: center; font-size: 12px; color: rgba(45,74,45,0.45); padding: 1.5rem 0 0.5rem; letter-spacing: 0.03em; }
   .loading, .empty { text-align: center; padding: 3rem 0; font-size: 15px; color: var(--ink-soft); }
@@ -143,8 +144,8 @@
     .stats { gap: 8px; }
     .stat { padding: 0.9rem 1rem; }
     .stat-val { font-size: 24px; }
-    .container { padding: 1.25rem 1rem 7rem; }
-    .fab { bottom: 1rem; right: 1rem; padding: 12px 20px; font-size: 15px; border-radius: 12px; }
+    .container { padding: 1.25rem 1rem 2rem; }
+
   }
 </style>
 </head>
@@ -199,6 +200,7 @@
           <div class="feedback-success" id="feedback-success">✓ Thanks — we'll take a look.</div>
         </div>
       </div>
+      <button class="fab" onclick="showSection('submit',null)" id="fab">Submit issue</button>
       <p class="tagline" id="feedback-tagline">Powered by residents · <button class="feedback-link" onclick="toggleFeedback()">Give feedback</button></p>
     </div>
 
@@ -226,7 +228,7 @@
     </div>
   </div>
 
-  <button class="fab" onclick="showSection('submit',null)" id="fab">Submit issue</button>
+
 </div>
 
 <script>
@@ -288,14 +290,18 @@ function renderBacklog() {
   const q = (document.getElementById('search').value||'').toLowerCase();
   const filtered = backlog
     .filter(i => (activeFilter==='All'||i.Status===activeFilter) && (!q||i.Title.toLowerCase().includes(q)))
-    .sort((a,b) => (Number(b.Upvotes)||0)-(Number(a.Upvotes)||0));
+    .sort((a,b) => {
+      if(a._new && !b._new) return -1;
+      if(b._new && !a._new) return 1;
+      return (Number(b.Upvotes)||0)-(Number(a.Upvotes)||0);
+    });
   const list = document.getElementById('backlog-list');
   if(!filtered.length) { list.innerHTML='<div class="empty">No issues match this filter.</div>'; return; }
   list.innerHTML = filtered.map(item => {
     const votes = Number(item.Upvotes)||0;
     const feedback = Number(item['Feedback count'])||0;
     const voted = userVotes[item.ID];
-    return `<div class="issue-card">
+    return `<div class="issue-card${item._new?' is-new':''}">
       <div class="issue-top">
         <div class="issue-title">${item.Title}</div>
         ${statusBadge(item.Status)}
@@ -364,12 +370,18 @@ async function submitIssue() {
       Upvotes: 0,
       'Feedback count': 1
     };
+    newItem._new = true;
     backlog.unshift(newItem);
     document.getElementById('new-title').value='';
     document.getElementById('new-info').value='';
     document.getElementById('submit-success').style.display='block';
     updateStats();
-    setTimeout(()=>{ document.getElementById('submit-success').style.display='none'; showSection('backlog', document.querySelectorAll('.nav-btn')[0]); },2000);
+    setTimeout(()=>{
+      document.getElementById('submit-success').style.display='none';
+      const navBtn = document.querySelectorAll('.nav-btn')[0];
+      showSection('backlog', navBtn);
+      renderBacklog();
+    },1500);
   } catch(e) { alert('Something went wrong. Please try again.'); }
   btn.textContent='Submit issue'; btn.disabled=false;
 }
@@ -422,8 +434,7 @@ function showSection(name,btn) {
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('section-'+name).classList.add('active');
   if(btn) btn.classList.add('active');
-  if(name==='submit') { renderSimilarList(); document.getElementById('fab').style.display='none'; }
-  else document.getElementById('fab').style.display='flex';
+  if(name==='submit') renderSimilarList();
 }
 </script>
 </body>
