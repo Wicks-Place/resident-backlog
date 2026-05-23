@@ -329,7 +329,7 @@ function renderBacklog() {
   if(!filtered.length) { list.innerHTML='<div class="empty">No issues match this filter.</div>'; return; }
   list.innerHTML = filtered.map(item => {
     const votes = Number(item.Upvotes)||0;
-    const voted = userVotes[item.ID];
+    const voted = userVotes[String(item.ID)];
     return `<div class="issue-card${item._new?' is-new':''}">
       <div class="issue-top">
         <div class="issue-title">${item.Title}</div>
@@ -356,9 +356,10 @@ async function vote(id) {
   if(!btn||btn.disabled) return;
   btn.disabled = true;
   const item = backlog.find(i => i.ID==id);
-  const delta = userVotes[id] ? -1 : 1;
-  if(userVotes[id]) { delete userVotes[id]; }
-  else { userVotes[id] = true; }
+  const sid = String(id);
+  const delta = userVotes[sid] ? -1 : 1;
+  if(userVotes[sid]) { delete userVotes[sid]; }
+  else { userVotes[sid] = true; }
   saveVotes(userVotes);
   item.Upvotes = Math.max(0, (Number(item.Upvotes)||0) + delta);
   renderBacklog(); updateStats();
@@ -472,7 +473,7 @@ async function refreshBacklog() {
     const newItems = backlog.filter(i => i._new);
     const merged = [...newItems, ...freshItems.filter(f => !newItems.find(n => n.ID == f.ID))];
     merged.forEach(item => {
-      if(userVotes[item.ID]) {
+      if(userVotes[String(item.ID)]) {
         item.Upvotes = Math.max(Number(item.Upvotes)||0, 1);
       }
     });
