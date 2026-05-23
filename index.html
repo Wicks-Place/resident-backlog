@@ -30,7 +30,7 @@
   #gate { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem; background: var(--green); }
   .gate-card { background: var(--white); border-radius: 16px; padding: 2.5rem; max-width: 380px; width: 100%; text-align: center; }
   .gate-logo { width: 48px; height: 48px; background: var(--green); border-radius: 12px; margin: 0 auto 1.25rem; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-  .gate-card h1 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .gate-card h1 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
   .gate-sub { font-size: 13px; color: var(--ink-soft); margin-bottom: 1.75rem; line-height: 1.6; }
   .gate-input { width: 100%; font-size: 15px; padding: 11px 16px; border: 1px solid var(--border-strong); border-radius: 10px; background: #F7F7F5; color: var(--ink); font-family: 'DM Sans', sans-serif; text-align: center; letter-spacing: 0.06em; margin-bottom: 10px; outline: none; transition: border-color 0.15s; }
   .gate-input:focus { border-color: var(--green); }
@@ -52,7 +52,7 @@
   .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.75rem; }
   .stat { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; }
   .stat-val { font-size: 28px; font-weight: 600; color: var(--ink); line-height: 1; }
-  .stat-label { font-size: 11px; color: var(--ink-soft); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat-label { font-size: 12px; color: var(--ink-soft); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
 
   .section { display: none; }
   .section.active { display: block; }
@@ -68,7 +68,7 @@
   .issue-card { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 8px; transition: box-shadow 0.15s; }
   .issue-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
   .issue-top { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; }
-  .issue-title { font-size: 14px; font-weight: 500; color: var(--ink); flex: 1; line-height: 1.4; }
+  .issue-title { font-size: 15px; font-weight: 500; color: var(--ink); flex: 1; line-height: 1.4; }
   .badge { font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; letter-spacing: 0.02em; }
   .badge-open { background: var(--open-bg); color: var(--open-fg); }
   .badge-inprogress { background: var(--progress-bg); color: var(--progress-fg); }
@@ -76,10 +76,10 @@
   .badge-pending { background: var(--pending-bg); color: var(--pending-fg); }
   .badge-submitted { background: var(--submitted-bg); color: var(--submitted-fg); }
   .badge-agenda { background: var(--agenda-bg); color: var(--agenda-fg); }
-  .issue-info { font-size: 13px; color: var(--ink-soft); margin-bottom: 10px; line-height: 1.5; }
+  .issue-info { font-size: 14px; color: var(--ink-soft); margin-bottom: 10px; line-height: 1.5; }
   .issue-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 0.5px solid var(--border); }
-  .upvote-count { font-size: 12px; color: var(--ink-faint); }
-  .upvote-btn { display: flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 500; padding: 5px 14px; border: 0.5px solid var(--border-strong); border-radius: 8px; background: none; color: var(--ink-soft); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .upvote-count { font-size: 13px; color: var(--ink-faint); }
+  .upvote-btn { display: flex; align-items: center; gap: 5px; font-size: 14px; font-weight: 500; padding: 5px 14px; border: 0.5px solid var(--border-strong); border-radius: 8px; background: none; color: var(--ink-soft); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
   .upvote-btn:hover { background: var(--green); border-color: var(--green); color: var(--white); }
   .upvote-btn.voted { background: var(--green); border-color: var(--green); color: var(--white); }
   .upvote-btn:disabled { opacity: 0.4; cursor: not-allowed; }
@@ -88,8 +88,8 @@
   .form-card h2 { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
   .form-card > p { font-size: 13px; color: var(--ink-soft); margin-bottom: 1.25rem; line-height: 1.6; }
   .similar-item { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 12px; background: rgba(183,196,179,0.3); border-radius: 8px; margin-bottom: 6px; }
-  .similar-text { font-size: 13px; color: var(--ink); flex: 1; line-height: 1.4; }
-  .similar-btn { font-size: 12px; font-weight: 500; padding: 4px 10px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--white); color: var(--ink-soft); cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .similar-text { font-size: 14px; color: var(--ink); flex: 1; line-height: 1.4; }
+  .similar-btn { font-size: 13px; font-weight: 500; padding: 4px 10px; border: 0.5px solid var(--border-strong); border-radius: 6px; background: var(--white); color: var(--ink-soft); cursor: pointer; white-space: nowrap; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
   .similar-btn:hover, .similar-btn.voted { background: var(--green); border-color: var(--green); color: var(--white); }
   .divider { border-top: 0.5px solid var(--border); margin: 1.25rem 0; }
   .form-label { font-size: 12px; font-weight: 500; color: var(--ink-soft); margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -102,16 +102,16 @@
   .success-msg { font-size: 13px; color: var(--resolved-fg); margin-top: 10px; display: none; font-weight: 500; }
 
   .motion-card { background: var(--card-bg); border-radius: 12px; padding: 1.1rem 1.25rem; margin-bottom: 8px; }
-  .motion-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; }
-  .motion-why { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+  .motion-title { font-size: 15px; font-weight: 500; margin-bottom: 6px; }
+  .motion-why { font-size: 14px; color: var(--ink-soft); line-height: 1.6; }
 
   .notice { background: rgba(255,248,220,0.9); border: 0.5px solid #E8C840; border-radius: 10px; padding: 12px 14px; font-size: 13px; color: #7A5500; margin-bottom: 1.25rem; line-height: 1.6; }
 
   .feedback-prompt { background: var(--green); border-radius: 12px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
   .feedback-prompt-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
-  .feedback-prompt strong { color: var(--white); display: block; font-size: 14px; margin-bottom: 3px; }
-  .feedback-prompt p { font-size: 13px; color: rgba(255,255,255,0.8); line-height: 1.5; flex: 1; }
-  .feedback-toggle-btn { padding: 8px 18px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 8px; color: var(--white); font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+  .feedback-prompt strong { color: var(--white); display: block; font-size: 15px; margin-bottom: 3px; }
+  .feedback-prompt p { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.5; flex: 1; }
+  .feedback-toggle-btn { padding: 8px 18px; background: rgba(255,255,255,0.15); border: none; border-radius: 8px; color: var(--white); font-size: 13px; font-weight: 500; font-family: 'DM Sans', sans-serif; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
   .feedback-toggle-btn:hover { background: rgba(255,255,255,0.25); }
   .feedback-form-wrap { display: none; margin-top: 1rem; }
   .feedback-form-wrap.open { display: block; }
@@ -122,7 +122,7 @@
   .feedback-submit:hover { opacity: 0.88; }
   .feedback-success { font-size: 13px; color: rgba(255,255,255,0.85); margin-top: 8px; display: none; }
 
-  .fab { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--green); color: var(--white); border: none; border-radius: 14px; padding: 12px 20px; font-size: 14px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 16px rgba(45,74,45,0.35); display: flex; align-items: center; gap: 8px; z-index: 100; transition: all 0.15s; }
+  .fab { position: fixed; bottom: 1.5rem; right: 1.5rem; background: var(--green); color: var(--white); border: none; border-radius: 14px; padding: 14px 24px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; box-shadow: 0 4px 24px rgba(180,220,80,0.45), 0 2px 8px rgba(45,74,45,0.3); display: flex; align-items: center; gap: 8px; z-index: 100; transition: all 0.15s; }
   .fab:hover { background: var(--green-light); box-shadow: 0 6px 20px rgba(45,74,45,0.45); transform: translateY(-1px); }
 
   .tagline { text-align: center; font-size: 11px; color: rgba(45,74,45,0.5); padding: 1.5rem 0 0.5rem; letter-spacing: 0.03em; }
@@ -146,8 +146,8 @@
 <div id="gate">
   <div class="gate-card">
     <div class="gate-logo">🏢</div>
-    <h1>Wicks Place - Resident Backlog</h1>
-    <p class="gate-sub">Issues, priorities and AGM items for owners and residents. Enter the access code to continue.</p>
+    <h1>Wicks Place</h1>
+    <p class="gate-sub">Resident Backlog — issues, priorities and AGM items for owners and residents. Enter the access code to continue.</p>
     <input class="gate-input" type="password" id="gate-input" placeholder="Access code" autocomplete="off">
     <button class="gate-btn" onclick="checkCode()">Enter</button>
     <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
@@ -167,8 +167,8 @@
   <div class="container">
     <div class="stats">
       <div class="stat"><div class="stat-val" id="stat-open">—</div><div class="stat-label">Open issues</div></div>
+      <div class="stat"><div class="stat-val" id="stat-inprogress">—</div><div class="stat-label">In progress</div></div>
       <div class="stat"><div class="stat-val" id="stat-resolved">—</div><div class="stat-label">Completed</div></div>
-      <div class="stat"><div class="stat-val" id="stat-motions">—</div><div class="stat-label">AGM items</div></div>
     </div>
 
     <div id="section-backlog" class="section active">
@@ -226,7 +226,7 @@
     </div>
   </div>
 
-  <button class="fab" onclick="showSection('submit',null)" id="fab">+ Submit issue</button>
+  <button class="fab" onclick="showSection('submit',null)" id="fab">Submit issue</button>
 </div>
 
 <script>
@@ -385,6 +385,7 @@ function renderMotions() {
 
 function updateStats() {
   document.getElementById('stat-open').textContent = backlog.filter(i=>i.Status==='Open').length;
+  document.getElementById('stat-inprogress').textContent = backlog.filter(i=>i.Status==='In progress').length;
   document.getElementById('stat-resolved').textContent = backlog.filter(i=>i.Status==='Resolved').length;
 }
 
