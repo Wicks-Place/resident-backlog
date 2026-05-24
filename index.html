@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wicks Place<br>Resident Backlog</title>
+<title>Wicks Place Resident Backlog</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -114,6 +114,16 @@
   .tagline-link:hover { color: var(--ink); }
   .empty { padding: 2.5rem 1rem; text-align: center; color: var(--ink-muted); font-size: 13.5px; background: var(--card); border-radius: 12px; border: 1px dashed var(--card-edge); }
   .loading { text-align: center; padding: 3rem 0; font-size: 14px; color: var(--ink-faint); }
+  @keyframes shimmer { 0% { background-position: -600px 0; } 100% { background-position: 600px 0; } }
+  .skeleton-card { display: flex; gap: 14px; background: var(--card); border: 1px solid var(--card-edge); border-radius: 12px; padding: 14px 16px; margin-bottom: 8px; align-items: flex-start; }
+  .skeleton-pill { width: 52px; min-height: 60px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(90deg, var(--cream) 25%, var(--cream-soft) 50%, var(--cream) 75%); background-size: 600px 100%; animation: shimmer 1.4s infinite linear; }
+  .skeleton-content { flex: 1; padding-top: 4px; }
+  .skeleton-line { height: 13px; border-radius: 6px; background: linear-gradient(90deg, var(--cream) 25%, var(--cream-soft) 50%, var(--cream) 75%); background-size: 600px 100%; animation: shimmer 1.4s infinite linear; margin-bottom: 8px; }
+  .skeleton-title { width: 72%; height: 15px; animation-delay: 0.1s; }
+  .skeleton-body1 { width: 90%; animation-delay: 0.2s; }
+  .skeleton-body2 { width: 60%; animation-delay: 0.3s; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .issue-card { animation: fadeUp 0.3s ease both; }
   .sticky-cta { position: fixed; bottom: 0; left: 0; right: 0; background: var(--cream); border-top: 1px solid var(--card-edge); padding: 10px 16px 14px; z-index: 50; }
   .sticky-inner { max-width: 680px; margin: 0 auto; }
   .fab { display: block; width: 100%; box-sizing: border-box; background: var(--rust); color: #fff; border: none; border-radius: 12px; padding: 14px; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; text-align: center; box-shadow: 0 4px 18px rgba(185,94,46,0.35), 0 1px 4px rgba(185,94,46,0.2); transition: all 0.15s; }
@@ -138,7 +148,7 @@
         <path d="M4 20 C 9 15, 14 10, 20 4" stroke="#ebe4d3" stroke-width="1.2" stroke-linecap="round" opacity="0.7"/>
       </svg>
     </div>
-    <h1>Wicks Place Resident Backlog</h1>
+    <h1>Wicks Place<br>Resident Backlog</h1>
     <input class="gate-input" type="text" id="gate-input" placeholder="Access code" autocomplete="off">
     <button class="gate-btn" onclick="checkCode()">Enter</button>
     <div class="gate-error" id="gate-error">Incorrect code. Try again.</div>
@@ -193,7 +203,7 @@
         </div>
         <div class="filter-row" id="filter-row"></div>
       </div>
-      <div id="backlog-list"><div class="loading">Loading issues…</div></div>
+      <div id="backlog-list"><div class="skeleton-card"><div class="skeleton-pill"></div><div class="skeleton-content"><div class="skeleton-line skeleton-title"></div><div class="skeleton-line skeleton-body1"></div><div class="skeleton-line skeleton-body2"></div></div></div><div class="skeleton-card"><div class="skeleton-pill"></div><div class="skeleton-content"><div class="skeleton-line skeleton-title" style="width:55%"></div><div class="skeleton-line skeleton-body1" style="width:85%"></div><div class="skeleton-line skeleton-body2" style="width:45%"></div></div></div><div class="skeleton-card"><div class="skeleton-pill"></div><div class="skeleton-content"><div class="skeleton-line skeleton-title" style="width:65%"></div><div class="skeleton-line skeleton-body1"></div></div></div></div>
       <p class="tagline">Powered by residents · <button class="tagline-link" onclick="showSection('feedback')">Give feedback</button></p>
     </div>
 
@@ -350,7 +360,7 @@ function renderBacklog() {
   const list = document.getElementById('backlog-list');
   if(!filtered.length) { list.innerHTML='<div class="empty">Nothing matches that filter.</div>'; return; }
 
-  list.innerHTML = filtered.map(item=>{
+  list.innerHTML = filtered.map((item,idx)=>{
     const votes = Number(item.Upvotes)||0;
     const sid = String(item.ID);
     const voted = userVotes[sid];
